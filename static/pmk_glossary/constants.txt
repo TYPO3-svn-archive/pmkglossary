@@ -1,0 +1,33 @@
+plugin.tx_pmkglossary_pi1 {
+
+	# cat=plugin.pmkglossary/links/1; type=text; label= Starting Point (pid_list): The PID of the page (or comma separated list pf PIDs) where your news media plugin are located.
+	pid_list = 0
+
+	# cat=plugin.pmkglossary/enable/2; type=boolean; label= Enable debug output? : Displays the time it takes to execute the glossary parser at the bottom of the page.
+	debug = 1
+
+	# cat=plugin.pmkglossary/enable/4; type=boolean; label= Show thumbnail images in glossary?:
+	showImage = 1
+
+	# cat=plugin.pmkglossary/dims/5; type=text; label= Width of thumbnail image:
+	imageWidth = 100m
+
+	# cat=plugin.pmkglossary/dims/6; type=text; label= Height of thumbnail image:
+	imageHeight = 80m
+
+	# cat=plugin.pmkglossary/other/7; type=text; label= Catchword Wrap Tag : Tag for wrapping matched catchword
+	catchwordWrapTag = dfn
+
+	# cat=plugin.pmkglossary/other/8; type=text; label= Catchword Wrap Class : Class for tag wrapping matched catchword
+	catchwordWrapClass = vtip
+
+	# cat=plugin.pmkglossary/other/9; type=text; label= Parsable tags : Parse text inside these HTML tags. (comma separated)
+	parseTags = p,li,span,strong,b,em,i,u,underline
+
+	# cat=plugin.pmkglossary/other/a; type=text; label= No-Parse class : If the HTML tag has one of these classNames, then it will NOT be parsed. (comma separated)
+	noParseClass = no-glossary,vtip
+
+	# cat=plugin.pmkglossary/other/b; type=text; label= No-Parse Pages : Id list (PID) of pages which should be excluded from parsing. (comma separated)
+	noParsePages =
+
+}

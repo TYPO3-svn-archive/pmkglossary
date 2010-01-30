@@ -1,0 +1,49 @@
+a:2:{s:4:"meta";a:3:{s:5:"title";s:13:"PMK Glossary";s:5:"descr";s:0:"";s:7:"options";a:2:{s:10:"usageCount";N;s:19:"includeCodeAbstract";N;}}s:5:"files";a:2:{s:14:"MD5_bce189929d";a:4:{s:8:"filename";s:33:"pi1/class.tx_pmkglossary_pi1.php";s:8:"filesize";i:6276;s:6:"header";a:5:{s:4:"text";s:59:"
+
+Plugin 'PMK Glossary' for the 'pmkglossary' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:41:"@author Peter Klein <pmk@io.dk>";i:1;s:14:"@package TYPO3";i:2;s:27:"@subpackage tx_pmkglossary";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:33:"Peter Klein <pmk@io.dk>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:16:"tx_pmkglossary ";}}}s:3:"DAT";a:6:{i:1;a:8:{s:6:"header";s:48:"class tx_pmkglossary_pi1 extends tslib_pibase {";s:5:"class";i:1;s:11:"parentClass";s:19:"tx_pmkglossary_pi1";s:4:"cDat";a:5:{s:4:"text";s:59:"
+
+Plugin 'PMK Glossary' for the 'pmkglossary' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:41:"@author Peter Klein <pmk@io.dk>";i:1;s:14:"@package TYPO3";i:2;s:27:"@subpackage tx_pmkglossary";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:33:"Peter Klein <pmk@io.dk>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:16:"tx_pmkglossary ";}}}s:7:"content";s:0:"";s:12:"content_size";i:265;s:13:"content_lines";i:6;s:6:"atLine";i:49;}i:3;a:7:{s:6:"header";s:32:"function main($content, $conf) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi1";s:4:"cDat";a:3:{s:4:"text";s:32:"
+
+The main method of the PlugIn
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:28:"$content: The PlugIn content";}i:1;a:2:{i:0;s:5:"array";i:1;s:31:"$conf: The PlugIn configuration";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:44:"The	content that is displayed on the website";}}s:7:"content";s:0:"";s:12:"content_size";i:669;s:13:"content_lines";i:18;s:6:"atLine";i:63;}i:5;a:7:{s:6:"header";s:24:"function getGlossary() {";s:11:"parentClass";s:19:"tx_pmkglossary_pi1";s:4:"cDat";a:3:{s:4:"text";s:31:"
+
+Get glossary records from DB
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:49:"Complete array of glossary recorts (alpha sorted)";}}s:7:"content";s:0:"";s:12:"content_size";i:943;s:13:"content_lines";i:25;s:6:"atLine";i:87;}i:7;a:7:{s:6:"header";s:37:"function displayGlossary($glossary) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi1";s:4:"cDat";a:3:{s:4:"text";s:26:"
+
+Creates Glossary output
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:5:"array";i:1;s:27:"$glossary: Glossary records";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:44:"The	content that is displayed on the website";}}s:7:"content";s:0:"";s:12:"content_size";i:1138;s:13:"content_lines";i:34;s:6:"atLine";i:119;}i:9;a:4:{s:6:"header";s:28:"function _len_sort($a, $b) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi1";s:4:"cDat";a:3:{s:4:"text";s:35:"
+
+Custom sorting callback function
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:19:"$a: Glossary record";}i:1;a:2:{i:0;s:5:"array";i:1;s:19:"$b: glossary record";}}s:6:"return";a:2:{i:0;s:5:"mixed";i:1;s:9:"-1,0 or 1";}}s:6:"atLine";i:161;}i:11;a:7:{s:6:"header";s:30:"function _alpha_sort($a, $b) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi1";s:4:"cDat";a:3:{s:4:"text";s:35:"
+
+Custom sorting callback function
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:5:"array";i:1;s:19:"$a: Glossary record";}i:1;a:2:{i:0;s:5:"array";i:1;s:19:"$b: glossary record";}}s:6:"return";a:2:{i:0;s:5:"mixed";i:1;s:9:"-1,0 or 1";}}s:7:"content";s:0:"";s:12:"content_size";i:354;s:13:"content_lines";i:13;s:6:"atLine";i:175;}}}s:14:"MD5_8cd0f634c8";a:4:{s:8:"filename";s:33:"pi2/class.tx_pmkglossary_pi2.php";s:8:"filesize";i:8924;s:6:"header";a:5:{s:4:"text";s:59:"
+
+Plugin 'PMK Glossary' for the 'pmkglossary' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:41:"@author Peter Klein <pmk@io.dk>";i:1;s:14:"@package TYPO3";i:2;s:27:"@subpackage tx_pmkglossary";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:33:"Peter Klein <pmk@io.dk>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:16:"tx_pmkglossary ";}}}s:3:"DAT";a:8:{i:1;a:8:{s:6:"header";s:48:"class tx_pmkglossary_pi2 extends tslib_pibase {";s:5:"class";i:1;s:11:"parentClass";s:19:"tx_pmkglossary_pi2";s:4:"cDat";a:5:{s:4:"text";s:59:"
+
+Plugin 'PMK Glossary' for the 'pmkglossary' extension.
+";s:5:"param";a:0:{}s:6:"return";a:2:{i:0;s:6:"[type]";i:1;s:3:"...";}s:5:"other";a:3:{i:0;s:41:"@author Peter Klein <pmk@io.dk>";i:1;s:14:"@package TYPO3";i:2;s:27:"@subpackage tx_pmkglossary";}s:11:"other_index";a:3:{s:7:"@author";a:1:{i:0;s:33:"Peter Klein <pmk@io.dk>";}s:8:"@package";a:1:{i:0;s:6:"TYPO3 ";}s:11:"@subpackage";a:1:{i:0;s:16:"tx_pmkglossary ";}}}s:7:"content";s:0:"";s:12:"content_size";i:265;s:13:"content_lines";i:6;s:6:"atLine";i:51;}i:3;a:7:{s:6:"header";s:32:"function main($content, $conf) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi2";s:4:"cDat";a:3:{s:4:"text";s:32:"
+
+The main method of the PlugIn
+";s:5:"param";a:2:{i:0;a:2:{i:0;s:6:"string";i:1;s:59:"$content: The content that nshould be parsed for catchwords";}i:1;a:2:{i:0;s:5:"array";i:1;s:31:"$conf: The PlugIn configuration";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:44:"The content that is displayed on the website";}}s:7:"content";s:0:"";s:12:"content_size";i:1272;s:13:"content_lines";i:38;s:6:"atLine";i:65;}i:5;a:7:{s:6:"header";s:22:"function init($conf) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi2";s:4:"cDat";a:3:{s:4:"text";s:32:"
+
+Initialize Plugin config vars
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:5:"array";i:1;s:31:"$conf: The PlugIn configuration";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:423;s:13:"content_lines";i:7;s:6:"atLine";i:110;}i:7;a:7:{s:6:"header";s:26:"function parseDOM($node) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi2";s:4:"cDat";a:3:{s:4:"text";s:62:"
+
+Parse DOMDocument and replace catchwords with glossary info
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"object";i:1;s:23:"$node: DOMDocument node";}}s:6:"return";a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:7:"content";s:0:"";s:12:"content_size";i:669;s:13:"content_lines";i:22;s:6:"atLine";i:124;}i:9;a:7:{s:6:"header";s:24:"function getGlossary() {";s:11:"parentClass";s:19:"tx_pmkglossary_pi2";s:4:"cDat";a:3:{s:4:"text";s:63:"
+
+Get glossary records from DB, and creates preg_replace array
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:4:"void";i:1;s:0:"";}}s:6:"return";a:2:{i:0;s:5:"array";i:1;s:39:"$glossary: preg_replace array (from/to)";}}s:7:"content";s:0:"";s:12:"content_size";i:1829;s:13:"content_lines";i:34;s:6:"atLine";i:153;}i:11;a:7:{s:6:"header";s:29:"function HTML2DOM($content) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi2";s:4:"cDat";a:3:{s:4:"text";s:43:"
+
+convert HTML string data into DOM object
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:37:"$content: HTML content in text format";}}s:6:"return";a:2:{i:0;s:6:"object";i:1;s:19:"$domObj: DOM Object";}}s:7:"content";s:0:"";s:12:"content_size";i:219;s:13:"content_lines";i:8;s:6:"atLine";i:194;}i:13;a:4:{s:6:"header";s:40:"function DOM2HTML(DOMDocument $domObj) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi2";s:4:"cDat";a:3:{s:4:"text";s:43:"
+
+convert DOM object into HTML string data
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"object";i:1;s:19:"$domObj: DOM Object";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:37:"$content: HTML content in text format";}}s:6:"atLine";i:209;}i:15;a:7:{s:6:"header";s:31:"function xmltoxhtml($content) {";s:11:"parentClass";s:19:"tx_pmkglossary_pi2";s:4:"cDat";a:3:{s:4:"text";s:32:"
+
+Converts HTML tags into XHTML
+";s:5:"param";a:1:{i:0;a:2:{i:0;s:6:"string";i:1;s:37:"$content: HTML content in text format";}}s:6:"return";a:2:{i:0;s:6:"string";i:1;s:38:"$content: XHTML content in text format";}}s:7:"content";s:0:"";s:12:"content_size";i:565;s:13:"content_lines";i:22;s:6:"atLine";i:224;}}}}}

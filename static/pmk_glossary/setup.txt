@@ -1,0 +1,121 @@
+includeLibs.pmkglossary = EXT:pmkglossary/pi2/class.tx_pmkglossary_pi2.php
+plugin.tx_pmkglossary_pi1 {
+
+	# Global config options for both pi1 and pi2
+	pid_list = {$plugin.tx_pmkglossary_pi1.pid_list}
+
+	# Config options for the pi1 plugin only
+	showImage = {$plugin.tx_pmkglossary_pi1.showImage}
+	imageWidth = {$plugin.tx_pmkglossary_pi1.imageWidth}
+	imageHeight = {$plugin.tx_pmkglossary_pi1.imageHeight}
+
+	# Config options for the pi2 plugin only
+	debug = {$plugin.tx_pmkglossary_pi1.debug}
+
+	# Tag for wrapping matched catchword
+	catchwordWrapTag = {$plugin.tx_pmkglossary_pi1.catchwordWrapTag}
+
+	# Class for tag wrapping matched catchword
+	catchwordWrapClass = {$plugin.tx_pmkglossary_pi1.catchwordWrapClass}
+
+	# Parse text inside these HTML tags.
+	parseTags = {$plugin.tx_pmkglossary_pi1.parseTags}
+
+	# If the HTML tag has one of these classNames, then it will NOT be parsed.
+	noParseClass = {$plugin.tx_pmkglossary_pi1.noParseClass}
+
+	# List of page ids (PID) which should be excluded from parsing.
+	noParsePages = {$plugin.tx_pmkglossary_pi1.noParsePages}
+
+	image = IMAGE
+	image.file {
+		import = uploads/tx_pmkglossary/
+		import.field = image
+		import.listNum = 0
+		maxW = 300
+		width.override.dataWrap = {field:imagewidth}m
+		width.override.if.isTrue.field = imagewidth
+	}
+
+	_CSS_DEFAULT_STYLE (
+		dfn.vtip {
+			color: #00aa00;
+			cursor: help;
+			font-style : normal;
+			border-bottom: 1px dashed #00aa00;
+		}
+		.tx-pmkglossary-pi1 h3 {
+			display: block;
+			font: normal bold 15px/17px arial;
+			background: #666;
+			padding: 3px 5px;
+			margin: 0;
+			color: #fff;
+		}
+		.tx-pmkglossary-pi1 {
+			margin: 10px 0 0 0;
+		}
+		.tx-pmkglossary-pi1 dl {
+			margin: 0 0 10px 0;
+		}
+		.tx-pmkglossary-pi1 dl dt {
+			font: normal bold 13px/15px arial;
+			margin: 10px 0 0 0;
+		}
+		.tx-pmkglossary-pi1 dl dd {
+			margin: 0 0 10px 0;
+			font: normal normal 11px/13px arial;
+		}
+
+		div#vtip {
+			display: none;
+			position: absolute;
+			padding: 10px;
+			left: 5px;
+			margin-top: 15px;
+			width: 300px;
+			font: normal normal 10px/12px Verdana;
+			text-align: left;
+			z-index: 9999;
+			background-color: white;
+			border: 1px solid #a6c9e2;
+			border-radius: 5px;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+
+			box-shadow: 5px 5px 5px #444;
+			-webkit-box-shadow: 5px 5px 5px #444;
+			-moz-box-shadow: 5px 5px 5px #444;
+
+			filter:progid:DXImageTransform.Microsoft.Shadow(color='#444444', direction=135, strength=5);
+
+		}
+		div#vtip img { background: transparent url(../typo3conf/ext/pmkglossary/res/img-loader.gif) no-repeat center center;}
+		div#vtip img#vtipArrow {position: absolute;top: -10px;left: 5px;background: transparent;}
+
+		.accordionWrapper{display:inline-block; background-color:#fff; overflow:hidden;width:100%;}
+		.accordionWrapper img{vertical-align:top; border:0; margin:0; padding:0}
+		.accordionWrapper div{display:inline; float:left; margin:auto;}
+		.accordionWrapper div.title{cursor:pointer;margin: 2px 0;}
+		.accordionWrapper div.content{display:none;}
+	)
+}
+
+page.includeCSS {
+}
+page.includeJS {
+	jquery = EXT:pmkglossary/res/jquery-1.3.2.min.js
+	jquery_vtip = EXT:pmkglossary/res/vTip_v2/vtip-min.js
+}
+
+# Example of usage (TemplaVoila)
+#page.10 = COA
+#page.10.1 = USER
+#page.10.1.userFunc = tx_templavoila_pi1->main_page
+#page.10.stdWrap.postUserFunc = tx_pmkglossary_pi2->main
+
+# Example of usage (styles.content.get)
+#temp_content < styles.content.get
+#temp_content.stdWrap.postUserFunc = tx_pmkglossary_pi2->main
+#styles.content.get >
+#styles.content.get < temp_content
