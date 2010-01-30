@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'PMK Glossary',
-	'description' => 'PMK Glossary',
+	'description' => 'Multilanguage autoparse glossary.',
 	'category' => 'plugin',
 	'author' => 'Peter Klein',
 	'author_email' => 'pmk@io.dk',
