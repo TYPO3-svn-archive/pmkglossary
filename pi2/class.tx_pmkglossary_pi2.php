@@ -71,7 +71,6 @@
 		*/
 		function main($content, $conf) {
 			$this->init($conf);
-
 			// Page is excluded from parsing.
 			if ($GLOBALS['TSFE']->page['tx_pmkglossary_no_parsing'] || t3lib_div::inList($this->conf['noParsePages'],$GLOBALS['TSFE']->id)) {
 				return $content;
@@ -291,7 +290,7 @@ String (5) 	metaCharset 			utf-8
 		function getTitle($row) {
 			$title = $row['catchword_desc'];
 			// Make sure that DB data matches that of rendering.
-			$title = $GLOBALS['TSFE']->csConvObj->conv($title,$this->toCS,$this->fromCS,1);
+			//$title = $GLOBALS['TSFE']->csConvObj->conv($title,$this->toCS,$this->fromCS,1);
 			$title = $this->pi_RTEcssText($title);
 			if ($row['image'] != '') {
 				$this->cObj->data = $row;
@@ -325,6 +324,7 @@ String (5) 	metaCharset 			utf-8
 						break;
 				}
 			}
+			$title = $GLOBALS['TSFE']->csConvObj->conv($title,$this->fromCS,$this->toCS,1);
 			return $title;
 		}
 		/**
@@ -340,8 +340,8 @@ String (5) 	metaCharset 			utf-8
 			$this->conf['noParseClass'] = $this->makeRegExMatch($this->conf['noParseClass']);
 			$this->conf['pid_list'] = $this->conf['pid_list'] ? implode(t3lib_div::intExplode(',', $this->conf['pid_list']), ',') : $GLOBALS['TSFE']->id;
 
-			$this->fromCS = $GLOBALS['TSFE']->metaCharset ? $GLOBALS['TSFE']->metaCharset : $GLOBALS['TSFE']->defaultCharSet;
-			$this->toCS = $GLOBALS['TSFE']->renderCharset ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['TSFE']->defaultCharSet;
+			$this->fromCS = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->defaultCharSet;
+			$this->toCS = $GLOBALS['TSFE']->metaCharset ? $GLOBALS['TSFE']->metaCharset : $GLOBALS['TSFE']->defaultCharSet;
 		}
 
 		function makeRegExMatch($string) {
@@ -374,7 +374,8 @@ String (5) 	metaCharset 			utf-8
 						}
 					}
 					// Convert catchword from DB charset to render charset.
-					$key = $GLOBALS['TSFE']->csConvObj->conv($row['catchword'],$this->toCS,$this->fromCS,1);
+					$key = $row['catchword'];
+					//$key = $GLOBALS['TSFE']->csConvObj->conv($key,$this->fromCS,$this->toCS,1);
 					$glossary[$key] = $row;
 				}
 			}
@@ -382,6 +383,7 @@ String (5) 	metaCharset 			utf-8
 			// Sort array based on length of catchword (longest first)
 			// (Selecting by length is useless when using getRecordOverlay)
 			uksort($glossary, array($this, '_len_sort'));
+
 			return array_reverse($glossary);
 		}
 
@@ -398,7 +400,7 @@ String (5) 	metaCharset 			utf-8
 			$domObj->formatOutput = true;
 			$content = preg_replace('/\r/', '', $content);
 			$content = '<html><head><meta http-equiv="Content-Type" content="text/html; charset='.$this->toCS.'" /></head><body>'.(preg_match('%.*?<body[^>]*>(.*)</body>%s', $content, $regs) ? $regs[1] : $content).'</body></html>';
-
+debug($content,'content');
 			@$domObj->loadHTML($content);
 			return $domObj;
 		}
