@@ -71,65 +71,30 @@
 		*/
 		function main($content, $conf) {
 			$this->init($conf);
+
 			// Page is excluded from parsing.
 			if ($GLOBALS['TSFE']->page['tx_pmkglossary_no_parsing'] || t3lib_div::inList($this->conf['noParsePages'],$GLOBALS['TSFE']->id)) {
 				return $content;
 			};
 
 /*
-Language Options 1(L=0)
-Integer 	TSFE->sys_language_uid	 		0
-Mixed 		config.sys_language_uid	 		NULL
-String (0) 	TSFE->sys_language_mode
-Mixed 		config.sys_language_mode 		NULL
-Integer 	TSFE->sys_language_content	 	0
-Mixed 		TSFE->sys_language_contentOL 	NULL
-
-Encoding
-String (5) 	forceCharset 			utf-8
-Integer 	multiplyDBfieldSize 	1
-String (15) setDBinit 				SET NAMES utf8;
-String (1) 	UTF8filesystem 			1
-defaultCharSet 						iso-8859-1
-String (5) 	renderCharset 			utf-8
-String (5) 	metaCharset 			utf-8
------------------------------
-Language Options (L=1)
-Integer 	TSFE->sys_language_uid 			1
-String (1) 	config.sys_language_uid 		1
-String (0) 	TSFE->sys_language_mode
-Mixed 		config.sys_language_mode 		NULL
-Integer 	TSFE->sys_language_content 		1
-Mixed 		TSFE->sys_language_contentOL 	NULL
-
-Encoding
-String (5) 	forceCharset 			utf-8
-Integer 	multiplyDBfieldSize 	1
-String (15) setDBinit 				SET NAMES utf8;
-String (1) 	UTF8filesystem 			1
-defaultCharSet 						iso-8859-1
-String (5) 	renderCharset 			utf-8
-String (5) 	metaCharset 			utf-8
-*/
-
-/*
 			debug(array(
-			'TSFE->sys_language_uid' => $GLOBALS['TSFE']->sys_language_uid,
-			'config.sys_language_uid' => $GLOBALS['TSFE']->config['config']['sys_language_uid'],
-			'TSFE->sys_language_mode' => $GLOBALS['TSFE']->sys_language_mode,
-			'config.sys_language_mode' => $GLOBALS['TSFE']->config['config']['sys_language_mode'],
-			'TSFE->sys_language_content' => $GLOBALS['TSFE']->sys_language_content,
-			'TSFE->sys_language_contentOL' => $GLOBALS['TSFE']->sys_language_contentOL
+				'TSFE->sys_language_uid' => $GLOBALS['TSFE']->sys_language_uid,
+				'config.sys_language_uid' => $GLOBALS['TSFE']->config['config']['sys_language_uid'],
+				'TSFE->sys_language_mode' => $GLOBALS['TSFE']->sys_language_mode,
+				'config.sys_language_mode' => $GLOBALS['TSFE']->config['config']['sys_language_mode'],
+				'TSFE->sys_language_content' => $GLOBALS['TSFE']->sys_language_content,
+				'TSFE->sys_language_contentOL' => $GLOBALS['TSFE']->sys_language_contentOL
 			),'Language Options');
 
 			debug(array(
-			'forceCharset' => $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'],
-			'multiplyDBfieldSize' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'],
-			'setDBinit' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'],
-			'UTF8filesystem' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'],
-			'defaultCharSet' => $GLOBALS['TSFE']->defaultCharSet,
-			'renderCharset' => $GLOBALS['TSFE']->renderCharset,
-			'metaCharset' => $GLOBALS['TSFE']->metaCharset
+				'forceCharset' => $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'],
+				'multiplyDBfieldSize' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['multiplyDBfieldSize'],
+				'setDBinit' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'],
+				'UTF8filesystem' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'],
+				'defaultCharSet' => $GLOBALS['TSFE']->defaultCharSet,
+				'renderCharset' => $GLOBALS['TSFE']->renderCharset,
+				'metaCharset' => $GLOBALS['TSFE']->metaCharset
 			),'Encoding');
 */
 
@@ -247,7 +212,8 @@ String (5) 	metaCharset 			utf-8
 				foreach ($unmatched_nodes as $node) {
 					foreach ($this->glossary as $catchword => $data) {
 						$string = $node->data;
-
+debug($this->isUTF8($string),$string);
+debug($this->isUTF8($catchword),$catchword);
 						//if (preg_match('%\b'.preg_quote($catchword).'\b%iu',$string,$match,PREG_OFFSET_CAPTURE)) {
 						if (preg_match('%(?<=\A|\W)'.preg_quote($catchword).'(?=\z|\W)%iu', $string,$match,PREG_OFFSET_CAPTURE)) {
 							$word = $match[0][0];
@@ -257,13 +223,13 @@ String (5) 	metaCharset 			utf-8
 							// we fix this by recounting the text before the offset using multi-byte aware `strlen`
 							//$offset = intval(mb_strlen(substr($string, 0, $offset), $this->toCS));
 							//$offset = intval($GLOBALS['TSFE']->csConvObj->strlen($this->toCS,substr($string, 0, $offset)));
-							$offset = $GLOBALS['TSFE']->csConvObj->utf8_byte2char_pos($string,$offset);
+							//$offset = $GLOBALS['TSFE']->csConvObj->utf8_byte2char_pos($string,$offset);
 
 
 //debug(array($offset,$offset2),'offsets '.$this->toCS);
 
-							//$length2=strlen($word);
-							$length = $GLOBALS['TSFE']->csConvObj->strlen($this->toCS,$word);
+							$length=strlen($word);
+							//$length = $GLOBALS['TSFE']->csConvObj->strlen($this->toCS,$word);
 //debug(array($length,$length2),'lengths '.$word);
 
 							$matched_node = $node->splitText($offset);
@@ -374,8 +340,8 @@ String (5) 	metaCharset 			utf-8
 						}
 					}
 					// Convert catchword from DB charset to render charset.
-					$key = $row['catchword'];
 					//$key = $GLOBALS['TSFE']->csConvObj->conv($key,$this->fromCS,$this->toCS,1);
+					$key = $row['catchword'];
 					$glossary[$key] = $row;
 				}
 			}
@@ -399,8 +365,11 @@ String (5) 	metaCharset 			utf-8
 			$domObj->substituteEntities = false;
 			$domObj->formatOutput = true;
 			$content = preg_replace('/\r/', '', $content);
-			$content = '<html><head><meta http-equiv="Content-Type" content="text/html; charset='.$this->toCS.'" /></head><body>'.(preg_match('%.*?<body[^>]*>(.*)</body>%s', $content, $regs) ? $regs[1] : $content).'</body></html>';
-debug($content,'content');
+			//$content = ($this->fromCS==$this->toCS) ? $content : $GLOBALS['TSFE']->csConvObj->conv($content,$this->fromCS,$this->toCS,1);
+			//$content = ($this->fromCS==$this->toCS) ? $content : $GLOBALS['TSFE']->csConvObj->conv($content,$this->toCS,$this->fromCS,1);
+			$content = '<html><head><meta http-equiv="Content-Type" content="text/html; charset='.$this->fromCS.'" /></head><body>'.(preg_match('%.*?<body[^>]*>(.*)</body>%s', $content, $regs) ? $regs[1] : $content).'</body></html>';
+//debug($content,'utf'.$this->isUTF8($content));
+
 			@$domObj->loadHTML($content);
 			return $domObj;
 		}
@@ -412,8 +381,9 @@ debug($content,'content');
 		* @return string  $content: HTML content in text format
 		*/
 		function DOM2HTML(DOMDocument $domObj) {
-			$content = $domObj->saveXML($domObj, LIBXML_NOEMPTYTAG);
-			$content = $this->xmltoxhtml($content);
+			//$content = $domObj->saveXML($domObj, LIBXML_NOEMPTYTAG);
+			//$content = $this->xmltoxhtml($content);
+			$content = $domObj->saveHTML();
 			preg_match('|<body>(.*)</body>|ms', $content, $matches);
 			$content = $matches[1];
 			return $content;
@@ -440,6 +410,16 @@ debug($content,'content');
 			$a = $GLOBALS['TSFE']->csConvObj->strlen($this->toCS,$a);
 			$b = $GLOBALS['TSFE']->csConvObj->strlen($this->toCS,$b);
 			return strcmp($a,$b);
+		}
+
+		/**
+		 * Check if string is in UTF-8 format
+		 *
+		 * @param	array	string to check
+		 * @return	boolean	true if string is valid utf-8
+		 */
+		function isUTF8($str) {
+			return preg_match('/\A(?:([\09\0A\0D\x20-\x7E]|[\xC2-\xDF][\x80-\xBF]|\xE0[\xA0-\xBF][\x80-\xBF]|[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}|\xED[\x80-\x9F][\x80-\xBF]|\xF0[\x90-\xBF][\x80-\xBF]{2}|[\xF1-\xF3][\x80-\xBF]{3}|\xF4[\x80-\x8F][\x80-\xBF]{2})*)\Z/x', $str);
 		}
 	}
 
