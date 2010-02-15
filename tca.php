@@ -4,7 +4,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $TCA['tx_pmkglossary_glossary'] = Array (
 	'ctrl' => $TCA['tx_pmkglossary_glossary']['ctrl'],
 	'interface' => Array (
-		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,catchword,catchword_desc,image,imagewidth,imageorient'
+		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,fe_group,title,bodytext,image,imagewidth,imageorient'
 	),
 	'feInterface' => $TCA['tx_pmkglossary_glossary']['feInterface'],
 	'columns' => Array (
@@ -92,34 +92,23 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 				'foreign_table' => 'fe_groups'
 			)
 		),
-		'catchword' => Array (
+		'title' => Array (
 			'exclude' => 1,
-			'label' => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary.catchword',
+			'label' => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary.title',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '30',
 				'eval' => 'required,trim',
 			)
 		),
-		'catchword_desc' => Array (
+		'bodytext' => Array (
 			'exclude' => 1,
 			'l10n_mode' => 'mergeIfNotBlank',
-			'label' => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary.catchword_desc',
+			'label' => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary.bodytext',
 			'config' => Array (
 				'type' => 'text',
 				'cols' => '30',
-				'rows' => '4',
-                'wizards' => array(
-                    '_PADDING' => 2,
-                    'RTE' => array(
-                        'notNewRecords' => 1,
-                        'RTEonly'       => 1,
-                        'type'          => 'script',
-                        'title'         => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary.catchword_desc',
-                        'icon'          => 'wizard_rte2.gif',
-                        'script'        => 'wizard_rte.php',
-                    ),
-                ),
+				'rows' => '4'
 			)
 		),
         'image' => array (
@@ -156,6 +145,8 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 			)
 		),
 		'imageorient' => Array (
+			'exclude' => 1,
+			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:cms/locallang_ttc.xml:imageorient',
 			'config' => Array (
 				'type' => 'select',
@@ -176,7 +167,7 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden, catchword, catchword_desc;;;richtext[]:rte_transform[mode=ts_css|imgpath=uploads/tx_pmkglossary/rte/], image, imageorient, imagewidth')
+		'0' => Array('showitem' => '--div--;LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary.tab1,sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden, title, bodytext;;;richtext[]:rte_transform[mode=ts_css|imgpath=uploads/tx_pmkglossary/rte/], --div--;LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary.tab2,image, imageorient, imagewidth')
 	),
 	'palettes' => Array (
 		'1' => Array('showitem' => 'starttime, endtime, fe_group'),

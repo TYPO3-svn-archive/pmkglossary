@@ -13,8 +13,8 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="catchword.description">The catchword is used to locate the entry, and dictates its alphabetical position.</label>
-			<label index="catchword_desc.description">The catchword description is used to describe the meaning of the catchword.</label>
+			<label index="title.description">The catchword title is used to locate the entry, and dictates its alphabetical position.</label>
+			<label index="bodytext.description">The catchword description is used to describe the meaning of the catchword.</label>
 			<label index="hidden.description">Check this box if you wish to hide the glossary element from being displayed.</label>
 			<label index="image.description">Insert an image.</label>
 			<label index="image.details">You can attach an image to the glossary element.&lt;br /&gt;Depending on the configuration of TYPO3 you can even attach them in any format you like. Especially you do not need to worry about size and compression because these factors are normally handled by TYPO3 internally.&lt;br /&gt;&lt;br /&gt;When you use the &quot;Text w/image&quot; type, it's important to select a proper position of the imageblock. For this purpose, use the Position selector which is displayed below (or if you click in the image list field in the Classic backend).</label>

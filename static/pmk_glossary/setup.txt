@@ -4,6 +4,8 @@ plugin.tx_pmkglossary_pi1 {
 	# Global config options for both pi1 and pi2
 	pid_list = {$plugin.tx_pmkglossary_pi1.pid_list}
 
+	TYPO3localization = {$plugin.tx_pmkglossary_pi1.TYPO3localization}
+
 	# Config options for the pi1 plugin only
 	showImage = {$plugin.tx_pmkglossary_pi1.showImage}
 	imageWidth = {$plugin.tx_pmkglossary_pi1.imageWidth}
@@ -27,6 +29,48 @@ plugin.tx_pmkglossary_pi1 {
 	# List of page ids (PID) which should be excluded from parsing.
 	noParsePages = {$plugin.tx_pmkglossary_pi1.noParsePages}
 
+	# Mode of displaying tooltips (possible values: "ajax" or "static")
+	tooltipMode = {$plugin.tx_pmkglossary_pi1.tooltipMode}
+
+	# Tooltip layout
+	tooltip = COA
+	tooltip {
+
+		10 = IMAGE
+		10.file.import = uploads/tx_pmkglossary/
+		10.file.import.field = image
+		10.file.import.listNum = 0
+		10.file.maxW = 300
+		10.file.width.override.dataWrap = {field:imagewidth}m
+		10.file.width.override.if.isTrue.field = imagewidth
+		10.stdWrap.innerWrap.cObject = CASE
+		10.stdWrap.innerWrap.cObject {
+			key.field = imageorient
+			default = TEXT
+			default.value = <div style="text-align:center;">|</div>
+			1 = TEXT
+			1.value = <div style="text-align:right;">|</div>
+			2 = TEXT
+			2.value = <div style="text-align:left;">|</div>
+			8 <.default
+			9 < .1
+			10 < .2
+			17 = TEXT
+			17.value = <div style="float:right;margin:0 0 5px 5px;">|</div>
+			18 = TEXT
+			18.value = <div style="float:left;margin:0 5px 5px 0;">|</div>
+		}
+		10.stdWrap.if.value = 0,1,2,17,18
+		10.stdWrap.if.isInList.field = imageorient
+
+		20 = TEXT
+		20.field = bodytext
+		20.parseFunc < lib.parseFunc_RTE
+
+		30 < .10
+		30.stdWrap.if.value = 8,9,10
+	}
+
 	image = IMAGE
 	image.file {
 		import = uploads/tx_pmkglossary/
@@ -38,25 +82,42 @@ plugin.tx_pmkglossary_pi1 {
 	}
 
 	_CSS_DEFAULT_STYLE (
-		dfn.vtip {
-			color: #00aa00;
-			cursor: help;
-			font-style : normal;
-			border-bottom: 1px dashed #00aa00;
+		.accordionWrapper {
+			display:inline-block;
+			background-color:#eee;
+			border: 1px solid #000;
+			overflow:hidden;
+			width:99%;
+			margin-bottom: 20px;
 		}
+		.accordionWrapper img{vertical-align:top; border:0; margin:0; padding:0}
+		.accordionWrapper div{display:inline; float:left; margin:auto;}
+		.accordionWrapper div.content{display:none;}
+
 		.tx-pmkglossary-pi1 h3 {
-			display: block;
-			font: normal bold 15px/17px arial;
-			background: #666;
-			padding: 3px 5px;
 			margin: 0;
-			color: #fff;
+			padding:0;
+		}
+		.tx-pmkglossary-pi1 h3 a {
+			font: normal bold 15px/17px arial;
+			background: #666 url(../typo3conf/ext/pmkglossary/res/images/accordion_tab_bg.png) repeat-x 0px 0px;
+			padding: 4px 5px 3px 5px;
+			border-bottom: 1px solid #999999;
+			border-top: 1px solid #FFFFFF;
+			color: black;
+			cursor: pointer;
+			display: block;
+			margin: 0;
+			text-decoration: none;
+		}
+		.tx-pmkglossary-pi1 h3 a:hover {
+			background-position: 0px -29px;
 		}
 		.tx-pmkglossary-pi1 {
 			margin: 10px 0 0 0;
 		}
 		.tx-pmkglossary-pi1 dl {
-			margin: 0 0 10px 0;
+			margin: 0 10px 10px 10px;
 		}
 		.tx-pmkglossary-pi1 dl dt {
 			font: normal bold 13px/15px arial;
@@ -65,48 +126,87 @@ plugin.tx_pmkglossary_pi1 {
 		.tx-pmkglossary-pi1 dl dd {
 			margin: 0 0 10px 0;
 			font: normal normal 11px/13px arial;
+			border-bottom: 1px solid #ddd;
 		}
-
-		div#vtip {
-			display: none;
+		.tx-pmkglossary-pi1 dl dd:last-child {
+			border-bottom: none;
+		}
+		#tx-pmkglossary-debug {
+			text-align: center;
+			margin: 10px 0;
+		}
+		#tx-pmkglossary-debug span {
+			border: 2px solid #990000;
+			padding: 5px 5px;
+			background: #ddd;
+			color: #000;
+		}
+		dfn.vtip {
+			color: #00aa00;
+			cursor: help;
+			font-style : normal;
+			border-bottom: 1px dashed #00aa00;
+		}
+		.tooltip {
 			position: absolute;
 			padding: 10px;
-			left: 5px;
-			margin-top: 15px;
+			margin: 0px 0px 0px 0px;
 			width: 300px;
 			font: normal normal 10px/12px Verdana;
 			text-align: left;
 			z-index: 9999;
+			color: #000;
 			background-color: white;
-			border: 1px solid #a6c9e2;
+			border: 2px solid #a6c9e2;
+
 			border-radius: 5px;
 			-moz-border-radius: 5px;
 			-webkit-border-radius: 5px;
 
-			box-shadow: 5px 5px 5px #444;
-			-webkit-box-shadow: 5px 5px 5px #444;
-			-moz-box-shadow: 5px 5px 5px #444;
+			box-shadow: 3px 3px 5px #444;
+			-webkit-box-shadow: 3px 3px 5px #444;
+			-moz-box-shadow: 3px 3px 5px #444;
 
 			filter:progid:DXImageTransform.Microsoft.Shadow(color='#444444', direction=135, strength=5);
 
 		}
-		div#vtip img { background: transparent url(../typo3conf/ext/pmkglossary/res/img-loader.gif) no-repeat center center;}
-		div#vtip img#vtipArrow {position: absolute;top: -10px;left: 5px;background: transparent;}
-
-		.accordionWrapper{display:inline-block; background-color:#fff; overflow:hidden;width:100%;}
-		.accordionWrapper img{vertical-align:top; border:0; margin:0; padding:0}
-		.accordionWrapper div{display:inline; float:left; margin:auto;}
-		.accordionWrapper div.title{cursor:pointer;margin: 2px 0;}
-		.accordionWrapper div.content{display:none;}
+		.tiploading {
+			height: 50px;
+			background: transparent url(../typo3conf/ext/pmkglossary/res/images/ajax-loader1.gif) no-repeat center center;
+		}
 	)
+
+}
+
+pmkglossaryajax = PAGE
+pmkglossaryajax {
+	typeNum = {$plugin.tx_pmkglossary_pi1.typeNum}
+	config {
+		disableAllHeaderCode = 1
+		sendCacheHeaders = 1
+		xhtml_cleaning = 0
+		admPanel = 0
+	}
+	10 = COA_INT
+	10 {
+		10 = RECORDS
+		10.source.data = GPvar:tx_pmkglossary_pi1|glossary
+		10.source.intval = 1
+		10.tables = tx_pmkglossary_glossary
+		10.conf.tx_pmkglossary_glossary < plugin.tx_pmkglossary_pi1.tooltip
+	}
 }
 
 page.includeCSS {
 }
 page.includeJS {
-	jquery = EXT:pmkglossary/res/jquery-1.3.2.min.js
-	jquery_vtip = EXT:pmkglossary/res/vTip_v2/vtip-min.js
+	jquery = EXT:pmkglossary/res/jquery-1.4.1.min.js
+	jquerysimpletip = EXT:pmkglossary/res/jquery.simpletip-1.3.1.min.js
+	simpletip = EXT:pmkglossary/res/simpletip_ajax.js
 }
+[globalString = LIT:static = {$plugin.tx_pmkglossary_pi1.tooltipMode}]
+page.includeJS.simpletip = EXT:pmkglossary/res/simpletip_static.js
+[GLOBAL]
 
 # Example of usage (TemplaVoila)
 #page.10 = COA

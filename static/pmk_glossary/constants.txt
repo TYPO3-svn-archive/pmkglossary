@@ -30,4 +30,12 @@ plugin.tx_pmkglossary_pi1 {
 	# cat=plugin.pmkglossary/other/b; type=text; label= No-Parse Pages : Id list (PID) of pages which should be excluded from parsing. (comma separated)
 	noParsePages =
 
+	# cat=plugin.pmkglossary/other/c; type=int; label= TYPO3 typeNum used for AJAX requests:
+	typeNum = 52
+
+	# cat=plugin.pmkglossary/other/d; type=options[ajax,static]; label= Mode of displaying tooltips: Possible values: "ajax" or "static"
+	tooltipMode = ajax
+
+	# cat=plugin.pmkglossary/enable/e; type=boolean; label= Use TYPO3 Localization Overlay?: If enabled localization overlay is used.
+	TYPO3localization = 
 }

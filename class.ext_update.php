@@ -61,7 +61,7 @@ class ext_update extends tslib_pibase {
 					<fieldset>
 						<legend>Convert mr_glossary data to pmkglossary format</legend>
 						<div>
-							<label for="options">What to do with mr_glossary records?
+							<label for="options">What to do with existing mr_glossary records?
 							<select name="options">
 								<option value="0">Nothing</option>
 								<option value="1">Hide</option>
@@ -139,8 +139,8 @@ class ext_update extends tslib_pibase {
 			'starttime' => $row['starttime'],
 			'endtime' => $row['endtime'],
 			'fe_group' => $row['fe_group'],
-			'catchword' => $row['catchword'],
-			'catchword_desc' => $row['catchword_desc'],
+			'title' => $row['catchword'],
+			'bodytext' => $row['catchword_desc'],
 			'sys_language_uid' => intval($row['sys_language_uid']),
 			'l10n_parent' => intval($row['l10n_parent'])
 		);

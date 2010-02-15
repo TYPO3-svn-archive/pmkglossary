@@ -10,11 +10,11 @@ t3lib_extMgm::addToInsertRecords('tx_pmkglossary_glossary');
 $TCA['tx_pmkglossary_glossary'] = Array (
 	'ctrl' => Array (
 		'title' => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary',
-		'label' => 'catchword',
+		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'default_sortby' => 'ORDER BY catchword asc',
+		'default_sortby' => 'ORDER BY title asc',
 		'delete' => 'deleted',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
@@ -25,17 +25,18 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group',
 		),
+		'dividers2tabs' => 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_pmkglossary_glossary.gif',
 	),
 	'feInterface' => Array (
-		'fe_admin_fieldList' => 'hidden, starttime, endtime, fe_group, catchword, catchword_desc, image, imagewidth, imageorient',
+		'fe_admin_fieldList' => 'hidden, starttime, endtime, fe_group, title, bodytext, image, imagewidth, imageorient',
 	)
 );
 
 
 t3lib_div::loadTCA('tt_content');
-$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='layout,select_key';
+$TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='layout,select_key,pages,recursive';
 
 
 $tempColumns = Array (

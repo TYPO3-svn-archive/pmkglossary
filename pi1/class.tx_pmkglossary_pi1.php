@@ -66,6 +66,7 @@
 			$this->conf = $conf;
 			$this->pi_setPiVarDefaults();
 			$this->pi_loadLL();
+
 			$GLOBALS['TSFE']->additionalHeaderData['msAccordion'] = '<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath($this->extKey).'res/jquery.msAccordion.min.js"></script>';
 
 			$GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = '<script language="javascript" type="text/javascript">
@@ -86,29 +87,35 @@
  * @return	array		Complete array of glossary records (alpha sorted)
  */
 		function getGlossary() {
-			$table = 'tx_pmkglossary_glossary';
-			$fields = '*';
-			$where = '(pid='. intval($GLOBALS['TSFE']->id) .' OR pid IN ('.$this->conf['pid_list'].')) AND (sys_language_uid IN (-1,0) OR (sys_language_uid='.$GLOBALS['TSFE']->sys_language_uid.' AND l10n_parent=0)) '.$this->cObj->enableFields($table);
-
-			$charset = $GLOBALS['TSFE']->csConvObj->get_locale_charset($locale);
 			$glossary = array();
+
+			$table = 'tx_pmkglossary_glossary';
+			$fields = 'pid,uid,sys_language_uid,title,bodytext,image,imagewidth,imageorient';
+			if ($this->conf['TYPO3localization']) {
+				$where = '(pid='. intval($GLOBALS['TSFE']->id) .' OR pid IN ('.$this->conf['pid_list'].')) AND (sys_language_uid IN (-1,0) OR (sys_language_uid='.$GLOBALS['TSFE']->sys_language_uid.' AND l10n_parent=0)) '.$this->cObj->enableFields($table);
+			}
+			else {
+				$where = '(pid='. intval($GLOBALS['TSFE']->id) .' OR pid IN ('.$this->conf['pid_list'].')) AND sys_language_uid IN (-1,'.$GLOBALS['TSFE']->sys_language_uid.') '.$this->cObj->enableFields($table);
+			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					if ($GLOBALS['TSFE']->sys_language_content) {
-						$OLmode = $GLOBALS['TSFE']->sys_language_contentOL ? 'hideNonTranslated' :
-						 '';
-						if (!($row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($table, $row, $GLOBALS['TSFE']->sys_language_uid, $OLmode))) {
-							continue;
-						}
+
+					// Language overlay:
+					if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
+						$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($table,$row,$GLOBALS['TSFE']->sys_language_content,$GLOBALS['TSFE']->sys_language_contentOL);
 					}
-					$key = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset,$row['catchword'], 'toUpper');
-					$key = $GLOBALS['TSFE']->csConvObj->conv($key,$GLOBALS['TSFE']->renderCharset,$charset);
-					$glossary[$key] = $row;
+
+					// $row might be unset in the sys_page->getRecordOverlay
+					if (!is_array($row)) continue;
+
+					// Set catchword as key
+					$glossary[$row['title']] = $row;
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
- 			uksort($glossary, array($this, '_alpha_sort'));
+			//ksort($glossary,SORT_LOCALE_STRING);
+			uksort($glossary, array($this, '_alpha_sort'));
 			return $glossary;
 		}
 
@@ -128,52 +135,44 @@
 					$iConf = array(
 					'file' => 'uploads/tx_pmkglossary/' . $row['image'],
 						'file.' => array(
-					'width' => $this->conf['imageWidth'],
-						'height' => $this->conf['imageHeight'] ),
-						'altText' => $row['catchword'],
-						'params' => 'style="float: left;margin: 0 5px 2px 0;"' );
+							'width' => $this->conf['imageWidth'],
+							'height' => $this->conf['imageHeight']
+						),
+						'altText' => $row['title'],
+						'params' => 'style="float: left;margin: 0 5px 2px 0;"'
+					);
 					$image = $this->cObj->IMAGE($iConf);
 				}
-				// Get rid of any non-word characters in front of word
-				$firstChar = preg_replace('/\A\W*/i', '', $row['catchword']);
-				// Get the 1st character
-				$firstChar = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$firstChar, 0, 1);
+				$firstChar = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$this->wordcharsOnly($row['title']),0,1);
 				// Convert it to uppercase
 				$firstChar = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset,$firstChar, 'toUpper');
-
 				if ($firstChar != $firstBlockChar) {
-					if ($firstBlockChar != '') {
+					if ($firstBlockChar !== '') {
 						$content .= '</dl></div></div>';
 					}
 					$firstBlockChar = $firstChar;
 					$content .= '<div class="set">
 						<div class="title">
-						<h3 title="'.$this->pi_getLL('words_starting_with').' '.$firstBlockChar.'">'.$firstBlockChar.'</h3>
+						<h3><a title="'.$this->pi_getLL('words_starting_with').' '.$firstBlockChar.'">'.$firstBlockChar.'</a></h3>
 						</div>
 						<div class="content">
 						<dl>';
 				}
-				$content .= '<dt>'. ($row['catchword']).'</dt>';
-				$content .= '<dd>'. $image . $this->pi_RTEcssText($row['catchword_desc']).'</dd>';
+				$content .= '<dt>'. ($row['title']).'</dt>';
+				$content .= '<dd>'. $image . $this->pi_RTEcssText($row['bodytext']).'</dd>';
 			}
 			$content .= '</dl></div></div>';
 			return '<div class="no-glossary" id="pmkglossary'.$GLOBALS['TSFE']->id.'">'.$content.'</div>';
 		}
 
-		/**
- * Custom sorting callback function
- *
- * @param	array		$a: Glossary record
- * @param	array		$b: glossary record
- * @return	mixed		-1,0 or 1
- */
-		function _alpha_sort($a, $b) {
-			$a = preg_replace('/\A\W*/i', '', $a);
-			$b = preg_replace('/\A\W*/i', '', $b);
-			// No matter what I try here, the sorting does not come up as expected,
-			// due to the match is done by unicode, not letters. WHY????
-			//return strcoll($a, $b);
-			return strcmp($a, $b);
+		function _alpha_sort($a,$b) {
+			$a = $this->wordcharsOnly($a);
+			$b = $this->wordcharsOnly($b);
+			return strcoll($a,$b);
+		}
+
+		function wordcharsOnly($text) {
+			return preg_replace('/(\W|_+)/', '', $text);
 		}
 	}
 
