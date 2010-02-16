@@ -1,12 +1,12 @@
 plugin.tx_pmkglossary_pi1 {
 
-	# cat=plugin.pmkglossary/links/1; type=text; label= Starting Point (pid_list): The PID of the page (or comma separated list pf PIDs) where your news media plugin are located.
+	# cat=plugin.pmkglossary/links/1; type=text; label= Storage Page (pid_list): The PID of the page (or comma separated list pf PIDs) where your glossary records are located.
 	pid_list = 0
 
-	# cat=plugin.pmkglossary/enable/2; type=boolean; label= Enable debug output? : Displays the time it takes to execute the glossary parser at the bottom of the page.
+	# cat=plugin.pmkglossary/enable/2; type=boolean; label= Enable debug output?: Displays the time it takes to execute the glossary parser at the bottom of the page.
 	debug = 1
 
-	# cat=plugin.pmkglossary/enable/4; type=boolean; label= Show thumbnail images in glossary?:
+	# cat=plugin.pmkglossary/enable/4; type=boolean; label= Show thumbnail images in glossary list?:
 	showImage = 1
 
 	# cat=plugin.pmkglossary/dims/5; type=text; label= Width of thumbnail image:
@@ -30,12 +30,9 @@ plugin.tx_pmkglossary_pi1 {
 	# cat=plugin.pmkglossary/other/b; type=text; label= No-Parse Pages : Id list (PID) of pages which should be excluded from parsing. (comma separated)
 	noParsePages =
 
-	# cat=plugin.pmkglossary/other/c; type=int; label= TYPO3 typeNum used for AJAX requests:
-	typeNum = 52
-
 	# cat=plugin.pmkglossary/other/d; type=options[ajax,static]; label= Mode of displaying tooltips: Possible values: "ajax" or "static"
 	tooltipMode = ajax
 
-	# cat=plugin.pmkglossary/enable/e; type=boolean; label= Use TYPO3 Localization Overlay?: If enabled localization overlay is used.
-	TYPO3localization = 
+	# cat=plugin.pmkglossary/enable/e; type=boolean; label= Use TYPO3 Localization Overlay?: If enabled localization overlay is used. Otherwise records is just selected by language.
+	TYPO3localization =
 }

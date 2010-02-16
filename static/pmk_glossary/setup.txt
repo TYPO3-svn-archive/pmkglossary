@@ -1,17 +1,36 @@
+# Include the parser script
 includeLibs.pmkglossary = EXT:pmkglossary/pi2/class.tx_pmkglossary_pi2.php
+
 plugin.tx_pmkglossary_pi1 {
 
+	# --------------------------------------
 	# Global config options for both pi1 and pi2
+	# --------------------------------------
+
+	#Storage Page (pid_list)
 	pid_list = {$plugin.tx_pmkglossary_pi1.pid_list}
 
+	#Use TYPO3 Localization Overlay?
 	TYPO3localization = {$plugin.tx_pmkglossary_pi1.TYPO3localization}
 
+	# --------------------------------------
 	# Config options for the pi1 plugin only
+	# --------------------------------------
+
+	# Show thumbnail images in glossary list?
 	showImage = {$plugin.tx_pmkglossary_pi1.showImage}
+
+	# Width of thumbnail image
 	imageWidth = {$plugin.tx_pmkglossary_pi1.imageWidth}
+
+	# Height of thumbnail image
 	imageHeight = {$plugin.tx_pmkglossary_pi1.imageHeight}
 
+	# --------------------------------------
 	# Config options for the pi2 plugin only
+	# --------------------------------------
+
+	# Enable debug output?
 	debug = {$plugin.tx_pmkglossary_pi1.debug}
 
 	# Tag for wrapping matched catchword
@@ -180,7 +199,7 @@ plugin.tx_pmkglossary_pi1 {
 
 pmkglossaryajax = PAGE
 pmkglossaryajax {
-	typeNum = {$plugin.tx_pmkglossary_pi1.typeNum}
+	typeNum = 52
 	config {
 		disableAllHeaderCode = 1
 		sendCacheHeaders = 1
