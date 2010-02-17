@@ -82,6 +82,12 @@ class ext_update extends tslib_pibase {
 		return $content;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$options: ...
+	 * @return	[type]		...
+	 */
 	function convertData($options) {
 		$table = 'tx_mrglossary_glossary';
 		$fields = '*';
@@ -106,6 +112,14 @@ class ext_update extends tslib_pibase {
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$parentRow: ...
+	 * @param	[type]		$newParentUid: ...
+	 * @param	[type]		$options: ...
+	 * @return	[type]		...
+	 */
 	function convertOverlay($parentRow,$newParentUid,$options) {
 		$table = 'tx_mrglossary_glossary_language_overlay';
 		$fields = '*';
@@ -130,6 +144,12 @@ class ext_update extends tslib_pibase {
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$row: ...
+	 * @return	[type]		...
+	 */
 	function createRecord($row) {
 		$table = 'tx_pmkglossary_glossary';
 		$fields = array(
@@ -159,7 +179,7 @@ class ext_update extends tslib_pibase {
 	function access() {
 		return true;
 	}
-	
+
 }
 
 // Include extension?

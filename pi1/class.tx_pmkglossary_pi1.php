@@ -29,9 +29,9 @@
  *   51: class tx_pmkglossary_pi1 extends tslib_pibase
  *   65:     function main($content, $conf)
  *   89:     function getGlossary()
- *  121:     function displayGlossary($glossary)
- *  163:     function _len_sort($a, $b)
- *  177:     function _alpha_sort($a, $b)
+ *  128:     function displayGlossary($glossary)
+ *  175:     function _alpha_sort($a,$b)
+ *  187:     function wordcharsOnly($text)
  *
  * TOTAL FUNCTIONS: 5
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -56,12 +56,12 @@
 		var $pi_checkCHash = true;
 
 		/**
- * The main method of the PlugIn
- *
- * @param	string		$content: The PlugIn content
- * @param	array		$conf: The PlugIn configuration
- * @return	string		The	content that is displayed on the website
- */
+		 * The main method of the PlugIn
+		 *
+		 * @param	string		$content: The PlugIn content
+		 * @param	array		$conf: The PlugIn configuration
+		 * @return	string		The	content that is displayed on the website
+		 */
 		function main($content, $conf) {
 			$this->conf = $conf;
 			$this->pi_setPiVarDefaults();
@@ -165,12 +165,27 @@
 			return '<div class="no-glossary" id="pmkglossary'.$GLOBALS['TSFE']->id.'">'.$content.'</div>';
 		}
 
+	/**
+	 * Custom sorting callback function.
+	 * Sorts alphabetically.
+	 * Ignores any non-word characters.
+	 *
+	 * @param	string		$a: First word
+	 * @param	string		$b: Second word
+	 * @return	integer		Returns -1,0 or 1
+	 */
 		function _alpha_sort($a,$b) {
 			$a = $this->wordcharsOnly($a);
 			$b = $this->wordcharsOnly($b);
 			return strcoll($a,$b);
 		}
 
+	/**
+	 * Strips non-word characters from text
+	 *
+	 * @param	string		$text: Text with possible non-word characters.
+	 * @return	string		Text with word characters only.
+	 */
 		function wordcharsOnly($text) {
 			return preg_replace('/(\W|_+)/', '', $text);
 		}
