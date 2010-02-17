@@ -7,6 +7,7 @@ t3lib_extMgm::allowTableOnStandardPages('tx_pmkglossary_glossary');
 
 t3lib_extMgm::addToInsertRecords('tx_pmkglossary_glossary');
 
+$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
 $TCA['tx_pmkglossary_glossary'] = Array (
 	'ctrl' => Array (
 		'title' => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary',
@@ -25,7 +26,7 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group',
 		),
-		'dividers2tabs' => 1,
+		'dividers2tabs' => (int)$extConf['dividers2tabs'],
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_pmkglossary_glossary.gif',
 	),

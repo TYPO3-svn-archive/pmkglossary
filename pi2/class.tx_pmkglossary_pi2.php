@@ -5,7 +5,8 @@
 	*  (c) 2010 Peter Klein <pmk@io.dk>
 	*  All rights reserved
 	*
-	*  Part of code taken from the 'mr_parseGlossary' extension.
+	*
+	*  Part of parser code taken from the 'mr_parseGlossary' extension.
 	*  @ author alex widschwendter <a.widschwendter@mediares.at>
 	*
 	*  This script is part of the TYPO3 project. The TYPO3 project is
@@ -95,7 +96,7 @@
 			if ($this->conf['debug']) {
 				// Subtract start time from current time and add it to output
 				$timer = time() + microtime()-$timer;
-				$content .= '<div id="tx-pmkglossary-debug"><span>Glossary parsetime: '.$timer.'</span></div>';
+				$content .= '<div id="tx-pmkglossary-debug"><span>Glossary parsetime: '.sprintf('%01.4f',$timer).'ms</span></div>';
 			}
 
 			return $content;
@@ -108,16 +109,7 @@
 		* @return void
 		*/
 		function processDom(DOMDocument $dom) {
-			//array_map(array($this, 'convertDOMCdataSectionToDOMText'), $this->listAllElements($dom));
 			array_map(array($this, 'glossary'), $this->listAllElements($dom));
-		}
-
-
-		function convertDOMCdataSectionToDOMText(DOMNode $node) {
-			if ($node instanceof DOMCdataSection) {
-				$new = new DOMText($node->data);
-				$node->parentNode->replaceChild($new, $node);
-			}
 		}
 
 		/**
