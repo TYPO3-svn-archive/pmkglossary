@@ -1,36 +1,22 @@
-# Include the parser script
 includeLibs.pmkglossary = EXT:pmkglossary/pi2/class.tx_pmkglossary_pi2.php
-
 plugin.tx_pmkglossary_pi1 {
 
-	# --------------------------------------
 	# Global config options for both pi1 and pi2
-	# --------------------------------------
-
-	#Storage Page (pid_list)
 	pid_list = {$plugin.tx_pmkglossary_pi1.pid_list}
 
-	#Use TYPO3 Localization Overlay?
 	TYPO3localization = {$plugin.tx_pmkglossary_pi1.TYPO3localization}
 
-	# --------------------------------------
 	# Config options for the pi1 plugin only
-	# --------------------------------------
 
-	# Show thumbnail images in glossary list?
+	templateFile = {$plugin.tx_pmkglossary_pi1.templateFile}
+
+	javascriptFile = {$plugin.tx_pmkglossary_pi1.javascriptFile}
+
 	showImage = {$plugin.tx_pmkglossary_pi1.showImage}
-
-	# Width of thumbnail image
 	imageWidth = {$plugin.tx_pmkglossary_pi1.imageWidth}
-
-	# Height of thumbnail image
 	imageHeight = {$plugin.tx_pmkglossary_pi1.imageHeight}
 
-	# --------------------------------------
 	# Config options for the pi2 plugin only
-	# --------------------------------------
-
-	# Enable debug output?
 	debug = {$plugin.tx_pmkglossary_pi1.debug}
 
 	# Tag for wrapping matched catchword
@@ -91,14 +77,21 @@ plugin.tx_pmkglossary_pi1 {
 	}
 
 	image = IMAGE
+	image.altText.field = title
+	image.params = style="float: left;margin: 0 5px 2px 0;"
 	image.file {
 		import = uploads/tx_pmkglossary/
 		import.field = image
 		import.listNum = 0
 		maxW = 300
-		width.override.dataWrap = {field:imagewidth}m
-		width.override.if.isTrue.field = imagewidth
+		width = {$plugin.tx_pmkglossary_pi1.imageWidth}
+		height = {$plugin.tx_pmkglossary_pi1.imageHeight}
 	}
+
+	bodytext = TEXT
+	bodytext.field = bodytext
+	bodytext.parseFunc < lib.parseFunc_RTE
+
 
 	_CSS_DEFAULT_STYLE (
 		.accordionWrapper {
@@ -171,13 +164,13 @@ plugin.tx_pmkglossary_pi1 {
 			padding: 10px;
 			margin: 0px 0px 0px 0px;
 			width: 300px;
-			font: normal normal 10px/12px Verdana;
+			/*font: normal normal 10px/12px Verdana;*/
 			text-align: left;
 			z-index: 9999;
 			color: #000;
 			background-color: white;
 			border: 2px solid #a6c9e2;
-
+			font-size: 95%;
 			border-radius: 5px;
 			-moz-border-radius: 5px;
 			-webkit-border-radius: 5px;
@@ -199,7 +192,7 @@ plugin.tx_pmkglossary_pi1 {
 
 pmkglossaryajax = PAGE
 pmkglossaryajax {
-	typeNum = 52
+	typeNum = {$plugin.tx_pmkglossary_pi1.typeNum}
 	config {
 		disableAllHeaderCode = 1
 		sendCacheHeaders = 1

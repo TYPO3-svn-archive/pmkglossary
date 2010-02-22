@@ -13,6 +13,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="tx_pmkglossary_no_parsing.description">Check this box if you don't want the page to be parsed by PMK Glossary.</label>
 			<label index="title.description">The catchword title is used to locate the entry, and dictates its alphabetical position.</label>
 			<label index="bodytext.description">The catchword description is used to describe the meaning of the catchword.</label>
 			<label index="hidden.description">Check this box if you wish to hide the glossary element from being displayed.</label>

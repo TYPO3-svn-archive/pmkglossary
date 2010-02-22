@@ -5,8 +5,7 @@
 	*  (c) 2010 Peter Klein <pmk@io.dk>
 	*  All rights reserved
 	*
-	*
-	*  Part of parser code taken from the 'mr_parseGlossary' extension.
+	*  Part of code taken from the 'mr_parseGlossary' extension.
 	*  @ author alex widschwendter <a.widschwendter@mediares.at>
 	*
 	*  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,40 +25,40 @@
 	*  This copyright notice MUST APPEAR in all copies of the script!
 	***************************************************************/
 	/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *   63: class tx_pmkglossary_pi2 extends tslib_pibase
- *   80:     function main($content, $conf)
- *  117:     function processDom(DOMDocument $dom)
- *  127:     function listAllElements(DOMNode $dom)
- *  147:     function getParents(DOMNode $dom)
- *  164:     function hasTagNames(DOMNode $node, array $tag_names)
- *  175:     function hasClassName($nodes)
- *  197:     function glossary(DOMNode $node)
- *  271:     function init($conf)
- *  290:     function makeRegExMatch($string)
- *  301:     function getGlossary()
- *  349:     function HTML2DOM($content)
- *  367:     function DOM2HTML(DOMDocument $domObj)
- *  381:     function _len_sort($a, $b)
- *
- * TOTAL FUNCTIONS: 13
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
+	* [CLASS/FUNCTION INDEX of SCRIPT]
+	*
+	*
+	*
+	*   63: class tx_pmkglossary_pi2 extends tslib_pibase
+	*   79:     function main($content, $conf)
+	*  116:     function processDom(DOMDocument $dom)
+	*  128:     function listAllElements(DOMNode $dom)
+	*  147:     function getParents(DOMNode $dom)
+	*  164:     function hasTagNames(DOMNode $node, array $tag_names)
+	*  175:     function hasClassName($nodes)
+	*  197:     function glossary(DOMNode $node)
+	*  271:     function init($conf)
+	*  290:     function makeRegExMatch($string)
+	*  301:     function getGlossary()
+	*  349:     function HTML2DOM($content)
+	*  367:     function DOM2HTML(DOMDocument $domObj)
+	*  381:     function _len_sort($a, $b)
+	*
+	* TOTAL FUNCTIONS: 13
+	* (This index is automatically created/updated by the extension "extdeveval")
+	*
+	*/
 
 	require_once(PATH_tslib.'class.tslib_pibase.php');
 
 
 	/**
-	 * Plugin 'PMK Glossary' for the 'pmkglossary' extension.
-	 *
-	 * @author Peter Klein <pmk@io.dk>
-	 * @package TYPO3
-	 * @subpackage tx_pmkglossary
-	 */
+	* Plugin 'PMK Glossary' for the 'pmkglossary' extension.
+	*
+	* @author Peter Klein <pmk@io.dk>
+	* @package TYPO3
+	* @subpackage tx_pmkglossary
+	*/
 	class tx_pmkglossary_pi2 extends tslib_pibase {
 		var $prefixId = 'tx_pmkglossary_pi2'; // Same as class name
 		var $scriptRelPath = 'pi2/class.tx_pmkglossary_pi2.php'; // Path to this script relative to the extension dir.
@@ -71,14 +70,14 @@
 		var $glossary = array();		// Glossary array
 
 		/**
- * The main method of the PlugIn
- *
- * @param	string		$content: The content that should be parsed for catchwords
- * @param	array		$conf: The PlugIn configuration
- * @return	string		The content that is displayed on the website
- */
+		* The main method of the PlugIn
+		*
+		* @param string		$content: The content that should be parsed for catchwords
+		* @param array		$conf: The PlugIn configuration
+		* @return string	The content that is displayed on the website
+		*/
 		function main($content, $conf) {
-			// Get configoptions from TS
+			// Get config options from TS
 			$this->init($conf);
 
 			// Page is excluded from parsing.
@@ -102,28 +101,29 @@
 			if ($this->conf['debug']) {
 				// Subtract start time from current time and add it to output
 				$timer = time() + microtime()-$timer;
-				$content .= '<div id="tx-pmkglossary-debug"><span>Glossary parsetime: '.sprintf('%01.4f',$timer).'ms</span></div>';
+				$content .= '<div id="tx-pmkglossary-debug"><span>Glossary parsetime: '.$timer.'</span></div>';
 			}
 
 			return $content;
 		}
 
 		/**
- * process DOMDocument object and insert glossary tags.
- *
- * @param	object		$domObj: DOMDocument Object
- * @return	void
- */
+		* process DOMDocument object and insert glossary tags.
+		*
+		* @param object  $domObj: DOMDocument Object
+		* @return void
+		*/
 		function processDom(DOMDocument $dom) {
+			//array_map(array($this, 'convertDOMCdataSectionToDOMText'), $this->listAllElements($dom));
 			array_map(array($this, 'glossary'), $this->listAllElements($dom));
 		}
 
 		/**
- * process Convert DOMDocument into array of nodes.
- *
- * @param	object		$domObj: DOMnode Object
- * @return	array		$total_nodes: Array of DOM nodes
- */
+		* process Convert DOMDocument into array of nodes.
+		*
+		* @param object $domObj: DOMnode Object
+		* @return array	$total_nodes: Array of DOM nodes
+		*/
 		function listAllElements(DOMNode $dom) {
 			$children = $dom->childNodes;
 			$length = $children->length;
@@ -139,11 +139,11 @@
 		}
 
 		/**
- * get parent nodes for element.
- *
- * @param	object		$domObj: DOMnode Object
- * @return	array		$parents: parent nodes
- */
+		* get parent nodes for element.
+		*
+		* @param	object	$domObj: DOMnode Object
+		* @return	array	$parents: parent nodes
+		*/
 		function getParents(DOMNode $dom) {
 			$parents = array();
 			$parent = $dom->parentNode;
@@ -155,23 +155,23 @@
 		}
 
 		/**
- * Test if node tag is in list of tagnames.
- *
- * @param	object		$node: DOMnode Object
- * @param	array		$tag_names: tag names
- * @return	boolean
- */
+		* Test if node tag is in list of tagnames.
+		*
+		* @param	object	$node: DOMnode Object
+		* @param	array	$tag_names: tag names
+		* @return	boolean
+		*/
 		function hasTagNames(DOMNode $node, array $tag_names) {
 			$tag_names = array_map('strtolower', $tag_names);
 			return in_array($node->tagName, $tag_names, true);
 		}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	object		$nodes: DOMnode Objects
-	 * @return	boolean		True if class in "noParseClass" is found.
-	 */
+		/**
+		* Test if class name for "no parse" has been set on parent nodes
+		*
+		* @param	object	$nodes: DOMnodes Object
+		* @return	boolean
+		*/
 		function hasClassName($nodes) {
 			$mode = false;
 
@@ -189,11 +189,11 @@
 
 
 		/**
- * Parse DOMDocument and replace catchwords with glossary info
- *
- * @param	array		$node: DOM array
- * @return	void
- */
+		* Parse DOMDocument and replace catchwords with glossary info
+		*
+		* @param array  $node: DOM array
+		* @return void
+		*/
 		function glossary(DOMNode $node) {
 			$parents = $this->getParents($node);
 
@@ -263,11 +263,11 @@
 		}
 
 		/**
- * Initialize Plugin config vars
- *
- * @param	array		$conf: The PlugIn configuration
- * @return	void
- */
+		* Initialize Plugin config vars
+		*
+		* @param array  $conf: The PlugIn configuration
+		* @return void
+		*/
 		function init($conf) {
 			// Merge conf with that of the pi1 plugin since pi2 has no own config
 			$this->conf = array_merge((array)$conf, $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_pmkglossary_pi1.']);
@@ -281,23 +281,23 @@
 			$this->toCS = $GLOBALS['TSFE']->metaCharset ? $GLOBALS['TSFE']->metaCharset : $GLOBALS['TSFE']->defaultCharSet;
 		}
 
-	/**
-	 * [Describe function...]
-	 *
-	 * @param	string		$string: ...
-	 * @return	string		...
-	 */
+		/**
+		* Creates RexEx ready comparison string
+		*
+		* @param	string		String/word to look for
+		* @return	string		RexEx ready comparison string
+		*/
 		function makeRegExMatch($string) {
 			$array = array_map('preg_quote',preg_split('/\s*,\s*/', $string));
 			return '/\b(?=\w)'.implode('|',$array).'\b(?!\w)/';
 		}
 
 		/**
- * Get glossary records from DB, and creates preg_replace array
- *
- * @param	void
- * @return	array		Complete array of glossary records (sorted by length. longest first)
- */
+		* Get glossary records from DB, and creates preg_replace array
+		*
+		* @param void
+		* @return array  Complete array of glossary records (sorted by length. longest first)
+		*/
 		function getGlossary() {
 			$glossary = array();
 
@@ -338,14 +338,14 @@
 		}
 
 		/**
- * Convert HTML string data into DOM object
- *
- * NOTE: Internal DOM format is ALWAYS UTF-8, regardless of the value of
- *       $this->toCS. Value of $this->toCS is ONLY used when saving data.
- *
- * @param	string		$content: HTML content in text format
- * @return	object		$domObj: DOM Object
- */
+		* Convert HTML string data into DOM object
+		*
+		* NOTE: Internal DOM format is ALWAYS UTF-8, regardless of the value of
+		*       $this->toCS. Value of $this->toCS is ONLY used when saving data.
+		*
+		* @param	string	$content: HTML content in text format
+		* @return	object	$domObj: DOM Object
+		*/
 		function HTML2DOM($content) {
 			$domObj = new DOMDocument('1.0');
 			$domObj->encoding = $this->toCS;
@@ -359,11 +359,11 @@
 		}
 
 		/**
- * Convert DOM object into HTML string data
- *
- * @param	object		$domObj: DOMDocument Object
- * @return	string		$content: HTML content in text format
- */
+		* Convert DOM object into HTML string data
+		*
+		* @param	object	$domObj: DOMDocument Object
+		* @return	string	$content: HTML content in text format
+		*/
 		function DOM2HTML(DOMDocument $domObj) {
 			$content = $domObj->saveHTML();
 			preg_match('|<body>(.*)</body>|ms', $content, $matches);
@@ -372,13 +372,12 @@
 		}
 
 		/**
- * Custom sorting callback function
- * Sorts by length of word.
- *
- * @param	string		$a: First glossary word
- * @param	string		$b: Second glossary word
- * @return	integer		Returns -1,0 or 1
- */
+		 * Custom sorting callback function
+		 *
+		 * @param	array	$a: Glossary record
+		 * @param	array	$b: glossary record
+		 * @return	mixed	-1,0 or 1
+		 */
 		function _len_sort($a, $b) {
 			//$a = $GLOBALS['TSFE']->csConvObj->strlen($this->toCS,$a);
 			//$b = $GLOBALS['TSFE']->csConvObj->strlen($this->toCS,$b);

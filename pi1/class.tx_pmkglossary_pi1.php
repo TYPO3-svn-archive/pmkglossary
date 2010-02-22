@@ -26,14 +26,15 @@
  *
  *
  *
- *   51: class tx_pmkglossary_pi1 extends tslib_pibase
- *   65:     function main($content, $conf)
+ *   52: class tx_pmkglossary_pi1 extends tslib_pibase
+ *   66:     function main($content, $conf)
  *   89:     function getGlossary()
  *  128:     function displayGlossary($glossary)
- *  175:     function _alpha_sort($a,$b)
- *  187:     function wordcharsOnly($text)
+ *  174:     function setMarkers(array $row,$markerArray = array()
+ *  190:     function _alpha_sort($a, $b)
+ *  202:     function wordcharsOnly($text)
  *
- * TOTAL FUNCTIONS: 5
+ * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -67,13 +68,12 @@
 			$this->pi_setPiVarDefaults();
 			$this->pi_loadLL();
 
-			$GLOBALS['TSFE']->additionalHeaderData['msAccordion'] = '<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath($this->extKey).'res/jquery.msAccordion.min.js"></script>';
-
-			$GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = '<script language="javascript" type="text/javascript">
-				$(document).ready(function() {
-				$("#pmkglossary'.$GLOBALS['TSFE']->id.'").msAccordion({defaultid:0, vertical:true});
-				})
-				</script>';
+			$jsFiles = t3lib_div::trimExplode(',',$this->conf['javascriptFile']);
+			$js = '';
+			foreach ($jsFiles as $jsFile) {
+				$js .= '<script type="text/javascript" src="'.str_replace(PATH_site,'',t3lib_div::getFileAbsFileName($jsFile)).'"></script>'.PHP_EOL;
+			}
+			$GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = $js;
 
 			$glossary = $this->getGlossary();
 			$content = $this->displayGlossary($glossary);
@@ -82,10 +82,10 @@
 		}
 
 		/**
- * Get glossary records from DB
- *
- * @return	array		Complete array of glossary records (alpha sorted)
- */
+		 * Get glossary records from DB
+		 *
+		 * @return	array		Complete array of glossary records (alpha sorted)
+		 */
 		function getGlossary() {
 			$glossary = array();
 
@@ -120,72 +120,85 @@
 		}
 
 		/**
- * Creates Glossary output
- *
- * @param	array		$glossary: Glossary records
- * @return	string		The	content that is displayed on the website
- */
+		 * Creates Glossary output
+		 *
+		 * @param	array		$glossary: Glossary records
+		 * @return	string		The	content that is displayed on the website
+		 */
 		function displayGlossary($glossary) {
 			$this->pi_loadLL();
-			$content = '';
+
+			// Get the template
+			$this->templateCode = $this->cObj->fileResource($this->conf['templateFile']);
+			$template['total'] = $this->cObj->getSubpart($this->templateCode,'###TEMPLATE_GLOSSARY###');
+			$template['block'] = $this->cObj->getSubpart($template['total'],'###GLOSSARY_BLOCK###');
+			$template['item'] = $this->cObj->getSubpart($template['block'],'###GLOSSARY_ITEM###');
+			$markerArray = array();
+
 			$firstBlockChar = '';
+			$content = '';
+			$items = '';
+
+			// Add dummy glossery item to compensate for loop
+			$glossary[] = array('title'=>'');
+
 			foreach ($glossary as $row) {
-				$image = '';
-				if ($row['image'] !== null && $this->conf['showImage']) {
-					$iConf = array(
-					'file' => 'uploads/tx_pmkglossary/' . $row['image'],
-						'file.' => array(
-							'width' => $this->conf['imageWidth'],
-							'height' => $this->conf['imageHeight']
-						),
-						'altText' => $row['title'],
-						'params' => 'style="float: left;margin: 0 5px 2px 0;"'
-					);
-					$image = $this->cObj->IMAGE($iConf);
-				}
 				$firstChar = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$this->wordcharsOnly($row['title']),0,1);
 				// Convert it to uppercase
 				$firstChar = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset,$firstChar, 'toUpper');
 				if ($firstChar != $firstBlockChar) {
-					if ($firstBlockChar !== '') {
-						$content .= '</dl></div></div>';
+					if ($firstBlockChar != '') {
+						$markerArray['###FIRSTCHAR###'] = $firstBlockChar;
+						$markerArray['###WORDS_STARTING_WITH###'] = $this->pi_getLL('words_starting_with');
+						$subpartArray['###GLOSSARY_ITEM###'] = $items;
+						$content .= $this->cObj->substituteMarkerArrayCached($template['block'],$markerArray,$subpartArray);
+						$items = '';
 					}
 					$firstBlockChar = $firstChar;
-					$content .= '<div class="set">
-						<div class="title">
-						<h3><a title="'.$this->pi_getLL('words_starting_with').' '.$firstBlockChar.'">'.$firstBlockChar.'</a></h3>
-						</div>
-						<div class="content">
-						<dl>';
 				}
-				$content .= '<dt>'. ($row['title']).'</dt>';
-				$content .= '<dd>'. $image . $this->pi_RTEcssText($row['bodytext']).'</dd>';
+				$markerArray = $this->setMarkers($row);
+				$items .= $this->cObj->substituteMarkerArrayCached($template['item'],$markerArray);
 			}
-			$content .= '</dl></div></div>';
-			return '<div class="no-glossary" id="pmkglossary'.$GLOBALS['TSFE']->id.'">'.$content.'</div>';
+			$markerArray['###GLOSSARY_ID###'] = 'pmkglossary'.$GLOBALS['TSFE']->id;
+			$subpartArray['###GLOSSARY_BLOCK###'] .= $content;
+			return $this->cObj->substituteMarkerArrayCached($template['total'],$markerArray,$subpartArray);
 		}
 
-	/**
-	 * Custom sorting callback function.
-	 * Sorts alphabetically.
-	 * Ignores any non-word characters.
-	 *
-	 * @param	string		$a: First word
-	 * @param	string		$b: Second word
-	 * @return	integer		Returns -1,0 or 1
-	 */
+		/**
+		 * Sets markers for HTML substitution
+		 *
+		 * @param	array		$row: Data to add to markers
+		 * @param	array		$markerArray: optional existing $markerArray
+		 * @return	array		$markerArray
+		 */
+		function setMarkers(array $row,$markerArray = array()) {
+			$this->cObj->data = $row;
+			foreach ($row as $key => $value) {
+				$val = $this->cObj->cObjGetSingle($this->conf[$key], $this->conf[$key.'.']);
+				$markerArray['###'.strtoupper($key).'###'] = $val ? $val : $value;
+			}
+			return $markerArray;
+		}
+
+		/**
+		 * Calback function for custom sorting
+		 *
+		 * @param	string		$a: First string
+		 * @param	string		$b: First string
+		 * @return	integer		Returns -1 if $a  is less than $b ; 1 if $a  is greater than $b , and 0 if they are equal.
+		 */
 		function _alpha_sort($a,$b) {
 			$a = $this->wordcharsOnly($a);
 			$b = $this->wordcharsOnly($b);
 			return strcoll($a,$b);
 		}
 
-	/**
-	 * Strips non-word characters from text
-	 *
-	 * @param	string		$text: Text with possible non-word characters.
-	 * @return	string		Text with word characters only.
-	 */
+		/**
+		 * Removes any non-word characters from string
+		 *
+		 * @param	string		$text: Text with possible non-word characters
+		 * @return	string		Text stripped of non-word characters
+		 */
 		function wordcharsOnly($text) {
 			return preg_replace('/(\W|_+)/', '', $text);
 		}

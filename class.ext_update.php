@@ -21,26 +21,41 @@
 	*
 	*  This copyright notice MUST APPEAR in all copies of the script!
 	***************************************************************/
+	/**
+	* [CLASS/FUNCTION INDEX of SCRIPT]
+	*
+	*
+	*
+	*   58: class ext_update extends tslib_pibase
+	*   65:     function main()
+	*  106:     function convertData($options)
+	*  138:     function convertOverlay($parentRow,$newParentUid,$options)
+	*  168:     function createRecord($row)
+	*  194:     function access()
+	*
+	* TOTAL FUNCTIONS: 4
+	* (This index is automatically created/updated by the extension "extdeveval")
+	*
+	*/
 
-
-/**
- * Class for updating/converting mr_glossary data to pmkglossary format
- *
- * @author	 Peter Klein <peter@umloud.dk>
- */
 if (@is_dir(PATH_site.'typo3/sysext/cms/tslib/')) {
         define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
 } elseif (@is_dir(PATH_site.'tslib/')) {
         define('PATH_tslib', PATH_site.'tslib/');
 }
 else {
-	die('PATH_tslib mot defined!');
+	die('PATH_tslib not defined!');
 }
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
 require_once(PATH_t3lib.'class.t3lib_page.php');
 
-class ext_update extends tslib_pibase {
+/**
+ * Class for updating/converting mr_glossary data into pmkglossary format
+ *
+ * @author	 Peter Klein <peter@umloud.dk>
+ */
+ class ext_update extends tslib_pibase {
 
 	/**
 	 * Main function, returning the HTML content of the module
@@ -83,10 +98,10 @@ class ext_update extends tslib_pibase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Convert mrglossary data to PMK Glossary format
 	 *
-	 * @param	[type]		$options: ...
-	 * @return	[type]		...
+	 * @param integer		$options: What to do with record after converting. (0=Nothing, 1=Hide, 2=Delete)
+	 * @return	void
 	 */
 	function convertData($options) {
 		$table = 'tx_mrglossary_glossary';
@@ -113,12 +128,12 @@ class ext_update extends tslib_pibase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Convert mrglossary overlay data to PMK Glossary format
 	 *
-	 * @param	[type]		$parentRow: ...
-	 * @param	[type]		$newParentUid: ...
-	 * @param	[type]		$options: ...
-	 * @return	[type]		...
+	 * @param array		$parentRow: Data from main record
+	 * @param integer	$newParentUid: Id for parent record
+	 * @param integer	$options: What to do with record after converting. (0=Nothing, 1=Hide, 2=Delete)
+	 * @return	void
 	 */
 	function convertOverlay($parentRow,$newParentUid,$options) {
 		$table = 'tx_mrglossary_glossary_language_overlay';
@@ -145,10 +160,10 @@ class ext_update extends tslib_pibase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Save converted data in PMK Glossary format
 	 *
-	 * @param	[type]		$row: ...
-	 * @return	[type]		...
+	 * @param array		$row: Data to save in DB
+	 * @return	void
 	 */
 	function createRecord($row) {
 		$table = 'tx_pmkglossary_glossary';
@@ -179,7 +194,7 @@ class ext_update extends tslib_pibase {
 	function access() {
 		return true;
 	}
-
+	
 }
 
 // Include extension?

@@ -7,7 +7,6 @@ t3lib_extMgm::allowTableOnStandardPages('tx_pmkglossary_glossary');
 
 t3lib_extMgm::addToInsertRecords('tx_pmkglossary_glossary');
 
-$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
 $TCA['tx_pmkglossary_glossary'] = Array (
 	'ctrl' => Array (
 		'title' => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary',
@@ -26,7 +25,7 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 			'endtime' => 'endtime',
 			'fe_group' => 'fe_group',
 		),
-		'dividers2tabs' => (int)$extConf['dividers2tabs'],
+		'dividers2tabs' => 1,
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_pmkglossary_glossary.gif',
 	),
@@ -52,7 +51,8 @@ $tempColumns = Array (
 t3lib_div::loadTCA('pages');
 t3lib_extMgm::addTCAcolumns('pages',$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes('pages','tx_pmkglossary_no_parsing;;;;1-1-1','','after:nav_title');
-
+// initialize "context sensitive help" (csh)
+t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:pmkglossary/locallang_csh.xml');
 
 t3lib_extMgm::addPlugin(
 	array(
@@ -70,7 +70,6 @@ if (TYPO3_MODE == 'BE') {
 
 t3lib_extMgm::addStaticFile($_EXTKEY,'static/pmk_glossary/', 'PMK Glossary');
 
-// initalize "context sensitive help" (csh)
+// initialize "context sensitive help" (csh)
 t3lib_extMgm::addLLrefForTCAdescr('tx_pmkglossary_glossary','EXT:pmkglossary/locallang_csh.xml');
-
 ?>
