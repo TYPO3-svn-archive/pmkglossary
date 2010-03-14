@@ -10,9 +10,11 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="words_starting_with">Words starting with:</label>
+			<label index="to_top">To top</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="words_starting_with">Ord der starter med:</label>
+			<label index="to_top">Til top</label>
 		</languageKey>
 		<languageKey index="de"></languageKey>
 		<languageKey index="no"></languageKey>

@@ -68,6 +68,7 @@
 		var $fromCS;					// Charset used when accessing DB data
 		var $toCS;						// Charset used for output in browser
 		var $glossary = array();		// Glossary array
+		var $cObj;
 
 		/**
 		* The main method of the PlugIn
@@ -99,6 +100,21 @@
 
 			// If config value "debug" is set, display the glossary parsetime
 			if ($this->conf['debug']) {
+				if (intval($this->conf['debug'])>1) {
+					$content.='$GLOBALS["TYPO3_CONF_VARS"]["BE"]["forceCharset"] = '.$GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'].'<br />';
+					$content.='$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["UTF8filesystem"] = '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'].'<br />';
+					$content.='$GLOBALS["TYPO3_CONF_VARS"]["SYS"]["t3lib_cs_convMethod"] = '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_convMethod'].'<br />';
+					$content.='$GLOBALS["TSFE"]->defaultCharSet = '.$GLOBALS['TSFE']->defaultCharSet.'<br />';
+					$content.='$GLOBALS["TSFE"]->metaCharset = '.$GLOBALS['TSFE']->metaCharset.'<br />';
+					$content.='$GLOBALS["TSFE"]->renderCharset = '.$GLOBALS['TSFE']->renderCharset.'<br />';
+					$content.='$this->fromCS = '.$this->fromCS.'<br />';
+					$content.='$this->toCS = '.$this->toCS.'<br />';
+					$content.='$_SERVER["SERVER_SOFTWARE"] = '. $_SERVER['SERVER_SOFTWARE'] .'<br />';
+					$content.='TYPO3_OS = '.TYPO3_OS.'<br />';
+					$content.='TYPO3_version = '.TYPO3_version.'<br />';
+					$content.='PHP_VERSION = '.PHP_VERSION.'<br />';
+					$content.='mysql_get_server_info() = '.mysql_get_server_info().'<br />';
+				}
 				// Subtract start time from current time and add it to output
 				$timer = time() + microtime()-$timer;
 				$content .= '<div id="tx-pmkglossary-debug"><span>Glossary parsetime: '.$timer.'</span></div>';
@@ -227,7 +243,6 @@
 							$word = $wordMatch[0][0];
 							$length = strlen($word);
 							$offset = $wordMatch[0][1];
-
 							if ($this->fromCS === 'utf-8') {
 								// correct offsets for multi-byte characters (`PREG_OFFSET_CAPTURE` returns *byte*-offset)
 								$offset = $GLOBALS['TSFE']->csConvObj->utf8_byte2char_pos($string,$offset);
@@ -253,7 +268,11 @@
 				$new->setAttribute('class', $this->conf['catchwordWrapClass']);
 
 				if ($this->conf['tooltipMode'] === 'ajax') {
-					$new->setAttribute('lang', $this->glossary[$word]['uid']);
+					$new->setAttribute('title', $this->cObj->typoLink_URL(array(
+						'parameter' => $GLOBALS['TSFE']->id,
+						'useCacheHash' => 1,
+						'additionalParams' => '&type=52&tx_pmkglossary_pi2[uid]='.$this->glossary[$word]['uid']
+					)));
 				}
 				else {
 					$this->cObj->data = $this->glossary[$word];
@@ -269,8 +288,8 @@
 		* @return void
 		*/
 		function init($conf) {
-			// Merge conf with that of the pi1 plugin since pi2 has no own config
-			$this->conf = array_merge((array)$conf, $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_pmkglossary_pi1.']);
+			// Merge local config with config of the pi2 object
+			$this->conf = array_merge((array)$conf, $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_pmkglossary_pi2.']);
 			$this->conf['parseTags'] = preg_split('/\s*,\s*/', strtolower($this->conf['parseTags']));
 			$this->conf['noParseClass'] = $this->makeRegExMatch($this->conf['noParseClass']);
 			$this->conf['pid_list'] = $this->conf['pid_list'] ? implode(t3lib_div::intExplode(',', $this->conf['pid_list']), ',') : $GLOBALS['TSFE']->id;
@@ -302,7 +321,7 @@
 			$glossary = array();
 
 			$table = 'tx_pmkglossary_glossary';
-			$fields = 'pid,uid,sys_language_uid,title,bodytext,image,imagewidth,imageorient';
+			$fields = 'pid,uid,sys_language_uid,title,alttitle,bodytext,image,imagewidth,imageorient';
 			if ($this->conf['TYPO3localization']) {
 				$where = '(pid='. intval($GLOBALS['TSFE']->id) .' OR pid IN ('.$this->conf['pid_list'].')) AND (sys_language_uid IN (-1,0) OR (sys_language_uid='.$GLOBALS['TSFE']->sys_language_uid.' AND l10n_parent=0)) '.$this->cObj->enableFields($table);
 			}
@@ -319,14 +338,26 @@
 					}
 					// $row might be unset in sys_page->getRecordOverlay
 					if (!is_array($row)) continue;
+					if (!$row['title']) continue;
 
 					// Make sure that data is in UTF-8 format
 					if ($this->fromCS != 'utf-8') {
 						$row['title'] = utf8_encode($row['title']);
+						$row['alttitle'] = utf8_encode($row['alttitle']);
 						$row['bodytext'] = utf8_encode($row['bodytext']);
 					}
 					// Set catchword as key
 					$glossary[$row['title']] = $row;
+
+					// Is there any alternate catchwords set in this record?
+					if ($row['alttitle']) {
+						$alt = t3lib_div::trimExplode(',',$row['alttitle']);
+						foreach ($alt as $aTitle) {
+							$row['title'] = $aTitle;
+							$glossary[$row['title']] = $row;
+						}
+					}
+
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);

@@ -7,6 +7,9 @@ t3lib_extMgm::allowTableOnStandardPages('tx_pmkglossary_glossary');
 
 t3lib_extMgm::addToInsertRecords('tx_pmkglossary_glossary');
 
+	// get extension configuration
+$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
+
 $TCA['tx_pmkglossary_glossary'] = Array (
 	'ctrl' => Array (
 		'title' => 'LLL:EXT:pmkglossary/locallang_db.php:tx_pmkglossary_glossary',
@@ -21,16 +24,13 @@ $TCA['tx_pmkglossary_glossary'] = Array (
         'transOrigDiffSourceField' => 'l10n_diffsource',
 		'enablecolumns' => Array (
 			'disabled' => 'hidden',
-			'starttime' => 'starttime',
-			'endtime' => 'endtime',
-			'fe_group' => 'fe_group',
 		),
-		'dividers2tabs' => 1,
+		'dividers2tabs' => $confArr['dividers2tabs'],
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_pmkglossary_glossary.gif',
 	),
 	'feInterface' => Array (
-		'fe_admin_fieldList' => 'hidden, starttime, endtime, fe_group, title, bodytext, image, imagewidth, imageorient',
+		'fe_admin_fieldList' => 'hidden, title, wordtitle, alttitle, bodytext, image, imagewidth, imageheight, imageorient',
 	)
 );
 
@@ -51,8 +51,14 @@ $tempColumns = Array (
 t3lib_div::loadTCA('pages');
 t3lib_extMgm::addTCAcolumns('pages',$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes('pages','tx_pmkglossary_no_parsing;;;;1-1-1','','after:nav_title');
-// initialize "context sensitive help" (csh)
+// add "context sensitive help" (csh)
 t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:pmkglossary/locallang_csh.xml');
+
+$TCA['pages']['columns']['module']['config']['items'][] = array(
+	'LLL:EXT:'.$_EXTKEY.'/locallang_db.xml:pages.module.glossary',
+	$_EXTKEY,
+	'EXT:'.$_EXTKEY.'/folder_tx_pmkglossary_glossary.gif'
+);
 
 t3lib_extMgm::addPlugin(
 	array(
@@ -63,13 +69,15 @@ t3lib_extMgm::addPlugin(
 	'list_type'
 );
 
-
 if (TYPO3_MODE == 'BE') {
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_pmkglossary_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_pmkglossary_pi1_wizicon.php';
+	$GLOBALS['ICON_TYPES'][$_EXTKEY] = array('icon' => t3lib_extMgm::extRelPath($_EXTKEY).'/folder_tx_pmkglossary_glossary.gif');
 }
 
-t3lib_extMgm::addStaticFile($_EXTKEY,'static/pmk_glossary/', 'PMK Glossary');
+t3lib_extMgm::addStaticFile($_EXTKEY,'pi2/static/parser/', 'PMK Glossary (parser)');
+t3lib_extMgm::addStaticFile($_EXTKEY,'pi1/static/ajax/', 'PMK Glossary Ajax (plugin)');
+t3lib_extMgm::addStaticFile($_EXTKEY,'pi1/static/static/', 'PMK Glossary Static (plugin)');
 
-// initialize "context sensitive help" (csh)
+// add "context sensitive help" (csh)
 t3lib_extMgm::addLLrefForTCAdescr('tx_pmkglossary_glossary','EXT:pmkglossary/locallang_csh.xml');
 ?>

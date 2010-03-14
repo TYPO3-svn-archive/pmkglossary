@@ -26,28 +26,19 @@
 	*
 	*
 	*
-	*   58: class ext_update extends tslib_pibase
-	*   65:     function main()
-	*  106:     function convertData($options)
-	*  138:     function convertOverlay($parentRow,$newParentUid,$options)
-	*  168:     function createRecord($row)
-	*  194:     function access()
+	*   48: class ext_update
+	*   55:     function main()
+	*  100:     function convertData($options)
+	*  135:     function convertOverlay($parentRow,$newParentUid,$options)
+	*  166:     function createRecord($row)
+	*  192:     wordcharsOnly($text)
+	*  204:     function access()
 	*
 	* TOTAL FUNCTIONS: 4
 	* (This index is automatically created/updated by the extension "extdeveval")
 	*
 	*/
 
-if (@is_dir(PATH_site.'typo3/sysext/cms/tslib/')) {
-        define('PATH_tslib', PATH_site.'typo3/sysext/cms/tslib/');
-} elseif (@is_dir(PATH_site.'tslib/')) {
-        define('PATH_tslib', PATH_site.'tslib/');
-}
-else {
-	die('PATH_tslib not defined!');
-}
-
-require_once(PATH_tslib.'class.tslib_pibase.php');
 require_once(PATH_t3lib.'class.t3lib_page.php');
 
 /**
@@ -55,44 +46,53 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
  *
  * @author	 Peter Klein <peter@umloud.dk>
  */
- class ext_update extends tslib_pibase {
+ class ext_update {
 
+	var $dupeCount = 0;
+	var $convertCount = 0;
+	var $totalCount = 0;
 	/**
 	 * Main function, returning the HTML content of the module
 	 *
 	 * @return	string		HTML
 	 */
 	function main()	{
-		global $BACK_PATH;
+		global $BACK_PATH,$LANG;
+		$LANG->includeLLFile("EXT:pmkglossary/locallang.xml");
 		$this->sys_page = t3lib_div::makeInstance("t3lib_pageSelect");
 		if (t3lib_extMgm::isLoaded('mr_glossary')) {
 
 			if (t3lib_div::_GP('update')) {
 				$this->convertData(intval(t3lib_div::_GP('options')));
-				$content = 'Records converted!';
+				$content = sprintf($LANG->getLL('upd.result'),$this->totalCount,$this->convertCount);
+				if ($this->dupeCount>0) {
+					$content .= '<br />'.sprintf($LANG->getLL('upd.duperesult'),$this->dupeCount);
+				}
 			}
 			else {
-				$content ='<form action="'.htmlspecialchars(t3lib_div::linkThisScript()).'" method="post">
+				$content =$test.'<form action="'.htmlspecialchars(t3lib_div::linkThisScript()).'" method="post">
 					<fieldset>
-						<legend>Convert mr_glossary data to pmkglossary format</legend>
+						<legend>'.$LANG->getLL('upd.legend').'</legend>
+ 						<p>&nbsp;</p>
 						<div>
-							<label for="options">What to do with existing mr_glossary records?
+							<label for="options">'.$LANG->getLL('upd.option').'
 							<select name="options">
-								<option value="0">Nothing</option>
-								<option value="1">Hide</option>
-								<option value="2">Delete</option>
+								<option value="1">'.$LANG->getLL('upd.option.nothing').'</option>
+								<option value="2">'.$LANG->getLL('upd.option.hide').'</option>
+								<option value="3">'.$LANG->getLL('upd.option.delete').'</option>
 							</select>
 							</label>
 						</div>
+ 						<p>&nbsp;</p>
 						<div>
-							<input name="update" value="Convert" type="submit" />
+							<input name="update" value="'.$LANG->getLL('upd.convert').'" type="submit" />
 						</div>
 					</fieldset>
 				</form>';
 			}
 		}
 		else {
-			$content = 'mr_glossary not installed!';
+			$content = $LANG->getLL('upd.error');
 		}
 		return $content;
 	}
@@ -104,27 +104,60 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
 	 * @return	void
 	 */
 	function convertData($options) {
+		$this->convertCount = 0;
+		$this->totalCount = 0;
+		$this->dupeCount = 0;
 		$table = 'tx_mrglossary_glossary';
 		$fields = '*';
 		$where = '1=1 '.$this->sys_page->enableFields($table);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$this->createRecord($row);
-				$this->convertOverlay($row,$GLOBALS['TYPO3_DB']->sql_insert_id(),$options);
-				switch ($options) {
-					case 1:
-						// Hide tx_mrglossary_glossary record
-						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($row['uid']),array('hidden' => 1));
-					break;
-					case 2:
-						// Delete tx_mrglossary_glossary record
-						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($row['uid']),array('deleted' => 1));
-					break;
+				$this->totalCount++;
+				if ($this->checkForDupe($row['catchword'],'tx_pmkglossary_glossary',$row['pid'],0)) {
+					$this->dupeCount++;
 				}
+				else {
+					$this->createRecord($row);
+					$this->convertCount++;
+					switch ($options) {
+						case 2:
+							// Hide tx_mrglossary_glossary record
+							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($row['uid']),array('hidden' => 1));
+						break;
+						case 3:
+							// Delete tx_mrglossary_glossary record
+							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($row['uid']),array('deleted' => 1));
+						break;
+						default:
+						break;
+					}
+				}
+				$this->convertOverlay($row,$GLOBALS['TYPO3_DB']->sql_insert_id(),$options);
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+	}
+
+	/**
+	 * Check if there already exists a record with the same title.
+	 * Or if the title is present in the altitle of another record.
+	 *
+	 * @param	string		$value: The value that has to be checked.
+	 * @param	string		$table: table of record
+	 * @param	string		$pid: pid of record
+	 * @param	string		$sys_language_uid: language id of record
+	 * @return	boolean		true if duplicate title is found
+	 */
+	function checkForDupe($value,$table,$pid,$sys_language_uid) {
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title', $table,
+'pid='.intval($pid).' AND deleted=0'.
+' AND sys_language_uid IN (-1,'.intval($sys_language_uid).
+') AND (title='.$GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table) .
+' OR '.$GLOBALS['TYPO3_DB']->listQuery('alttitle', $value, $table).')');
+		$result = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		return $result>0 ? true : false;
 	}
 
 	/**
@@ -142,17 +175,26 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where);
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$row['l10n_parent'] = $newParentUid;
-				$this->createRecord($row);
-				switch ($options) {
-					case 1:
-						// Hide tx_mrglossary_glossary record
-						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($row['uid']),array('hidden' => 1));
-					break;
-					case 2:
-						// Delete tx_mrglossary_glossary record
-						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($row['uid']),array('deleted' => 1));
-					break;
+				$this->totalCount++;
+				if ($this->checkForDupe($row['catchword'],'tx_pmkglossary_glossary',$row['pid'],$row['sys_language_uid'])) {
+					$this->dupeCount++;
+				}
+				else {
+					$row['l10n_parent'] = $newParentUid;
+					$this->createRecord($row);
+					$this->convertCount++;
+					switch ($options) {
+						case 2:
+							// Hide tx_mrglossary_glossary record
+							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($row['uid']),array('hidden' => 1));
+						break;
+						case 3:
+							// Delete tx_mrglossary_glossary record
+							$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($row['uid']),array('deleted' => 1));
+						break;
+						default:
+						break;
+					}
 				}
 			}
 		}
@@ -171,10 +213,8 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
 			'pid' => $row['pid'],
 			'tstamp' => $row['tstamp'],
 			'crdate' => $row['crdate'],
-			'starttime' => $row['starttime'],
-			'endtime' => $row['endtime'],
-			'fe_group' => $row['fe_group'],
 			'title' => $row['catchword'],
+			'wordtitle' => $this->wordcharsOnly($row['catchword']),
 			'bodytext' => $row['catchword_desc'],
 			'sys_language_uid' => intval($row['sys_language_uid']),
 			'l10n_parent' => intval($row['l10n_parent'])
@@ -187,6 +227,18 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
 	}
 
 	/**
+	 * Removes any non-word characters from string
+	 * If result is empty string then original string is returned
+	 *
+	 * @param	string		$text: Text with possible non-word characters
+	 * @return	string		Text stripped of non-word characters
+	 */
+	function wordcharsOnly($text) {
+		$stext = preg_replace('/(\W|_+)/u', '', $text);
+		return $stext ? $stext : $text;
+	}
+
+	/**
 	 * access is always allowed
 	 *
 	 * @return	boolean		Always returns true
@@ -194,7 +246,7 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
 	function access() {
 		return true;
 	}
-	
+
 }
 
 // Include extension?

@@ -67,15 +67,15 @@
 			$this->conf = $conf;
 			$this->pi_setPiVarDefaults();
 			$this->pi_loadLL();
-
-			$jsFiles = t3lib_div::trimExplode(',',$this->conf['javascriptFile']);
-			$js = '';
-			foreach ($jsFiles as $jsFile) {
-				$js .= '<script type="text/javascript" src="'.str_replace(PATH_site,'',t3lib_div::getFileAbsFileName($jsFile)).'"></script>'.PHP_EOL;
+			if ($this->conf['javascriptFile']) {
+				$jsFiles = t3lib_div::trimExplode(',',$this->conf['javascriptFile']);
+				$js = '';
+				foreach ($jsFiles as $jsFile) {
+					$js .= '<script type="text/javascript" src="'.str_replace(PATH_site,'',t3lib_div::getFileAbsFileName($jsFile)).'"></script>'.PHP_EOL;
+				}
+				$GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = $js;
 			}
-			$GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = $js;
-
-			$glossary = $this->getGlossary();
+			$glossary = $this->conf['displayRecords'] ? $this->getGlossary() : array();
 			$content = $this->displayGlossary($glossary);
 
 			return $this->pi_wrapInBaseClass($content);
@@ -90,7 +90,7 @@
 			$glossary = array();
 
 			$table = 'tx_pmkglossary_glossary';
-			$fields = 'pid,uid,sys_language_uid,title,bodytext,image,imagewidth,imageorient';
+			$fields = 'pid,uid,sys_language_uid,title,alttitle,wordtitle,bodytext,image,imagewidth,imageorient,left(ucase(wordtitle),1) AS firstchar';
 			if ($this->conf['TYPO3localization']) {
 				$where = '(pid='. intval($GLOBALS['TSFE']->id) .' OR pid IN ('.$this->conf['pid_list'].')) AND (sys_language_uid IN (-1,0) OR (sys_language_uid='.$GLOBALS['TSFE']->sys_language_uid.' AND l10n_parent=0)) '.$this->cObj->enableFields($table);
 			}
@@ -126,44 +126,87 @@
 		 * @return	string		The	content that is displayed on the website
 		 */
 		function displayGlossary($glossary) {
-			$this->pi_loadLL();
-
 			// Get the template
 			$this->templateCode = $this->cObj->fileResource($this->conf['templateFile']);
 			$template['total'] = $this->cObj->getSubpart($this->templateCode,'###TEMPLATE_GLOSSARY###');
 			$template['block'] = $this->cObj->getSubpart($template['total'],'###GLOSSARY_BLOCK###');
 			$template['item'] = $this->cObj->getSubpart($template['block'],'###GLOSSARY_ITEM###');
+			$template['menutotal'] = $this->cObj->getSubpart($this->templateCode,'###TEMPLATE_GLOSSARY_MENU###');
+			$template['menuitem'] = $this->cObj->getSubpart($template['menutotal'],'###GLOSSARY_MENUITEM###');
+
 			$markerArray = array();
 
 			$firstBlockChar = '';
 			$content = '';
+			$menu = $this->getMenu();
 			$items = '';
+			$blockId = 0;
+			$this->pageUrl = $this->pi_getPageLink($GLOBALS['TSFE']->id);
+			if (count($glossary)) {
+				// Add dummy glossery item to compensate for loop
+				$glossary[] = array('title'=>'');
 
-			// Add dummy glossery item to compensate for loop
-			$glossary[] = array('title'=>'');
-
-			foreach ($glossary as $row) {
-				$firstChar = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$this->wordcharsOnly($row['title']),0,1);
-				// Convert it to uppercase
-				$firstChar = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset,$firstChar, 'toUpper');
-				if ($firstChar != $firstBlockChar) {
-					if ($firstBlockChar != '') {
-						$markerArray['###FIRSTCHAR###'] = $firstBlockChar;
-						$markerArray['###WORDS_STARTING_WITH###'] = $this->pi_getLL('words_starting_with');
-						$subpartArray['###GLOSSARY_ITEM###'] = $items;
-						$content .= $this->cObj->substituteMarkerArrayCached($template['block'],$markerArray,$subpartArray);
-						$items = '';
+				foreach ($glossary as $row) {
+					$firstChar = $GLOBALS['TSFE']->csConvObj->substr($GLOBALS['TSFE']->renderCharset,$this->wordcharsOnly($row['title']),0,1);
+					// Convert it to uppercase
+					$firstChar = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset,$firstChar, 'toUpper');
+					if ($firstChar != $firstBlockChar) {
+						if ($firstBlockChar != '') {
+							$markerArray['###FIRSTCHAR###'] = $firstBlockChar;
+							$markerArray['###BLOCKID###'] = $blockId;
+							$markerArray['###PAGEURL###'] = $this->pageURL;
+							$markerArray['###WORDS_STARTING_WITH###'] = $this->pi_getLL('words_starting_with');
+							$subpartArray['###GLOSSARY_ITEM###'] = $items;
+							$content .= $this->cObj->substituteMarkerArrayCached($template['block'],$markerArray,$subpartArray);
+							$items = '';
+						}
+						$firstBlockChar = $firstChar;
+						$blockId++;
 					}
-					$firstBlockChar = $firstChar;
+					$markerArray = $this->setMarkers($row);
+					$items .= $this->cObj->substituteMarkerArrayCached($template['item'],$markerArray);
 				}
-				$markerArray = $this->setMarkers($row);
-				$items .= $this->cObj->substituteMarkerArrayCached($template['item'],$markerArray);
+				$subpartArray['###GLOSSARY_BLOCK###'] = $content;
 			}
 			$markerArray['###GLOSSARY_ID###'] = 'pmkglossary'.$GLOBALS['TSFE']->id;
-			$subpartArray['###GLOSSARY_BLOCK###'] .= $content;
-			return $this->cObj->substituteMarkerArrayCached($template['total'],$markerArray,$subpartArray);
+			$markerArray['###GLOSSARY_MENU###'] = $menu;
+			$res = $this->cObj->substituteMarkerArrayCached($template['total'],$markerArray,$subpartArray);
+			return $res;
 		}
 
+		function getMenu() {
+			$menu = '';
+			$table = 'tx_pmkglossary_glossary';
+			$fields = 'pid,uid,sys_language_uid,left(ucase(wordtitle),1) AS firstchar';
+			if ($this->conf['TYPO3localization']) {
+				$where = '(pid='. intval($GLOBALS['TSFE']->id) .' OR pid IN ('.$this->conf['pid_list'].')) AND (sys_language_uid IN (-1,0) OR (sys_language_uid='.$GLOBALS['TSFE']->sys_language_uid.' AND l10n_parent=0)) '.$this->cObj->enableFields($table);
+			}
+			else {
+				$where = '(pid='. intval($GLOBALS['TSFE']->id) .' OR pid IN ('.$this->conf['pid_list'].')) AND sys_language_uid IN (-1,'.$GLOBALS['TSFE']->sys_language_uid.') '.$this->cObj->enableFields($table);
+			}
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, $where,'firstchar','firstchar');
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
+				$data = array();
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					$data[] = $row;
+				}
+
+				// MYSQL's "ORDER BY" doesn't sort correctly when string contains national characters
+				// So we need to sort the data using custom PHP callback sorting function
+				usort($data, array($this, '_firstchar_sort'));
+
+				$count = 0;
+				foreach ($data as $row) {
+					$this->cObj->data = $row;
+					$count++;
+					$this->cObj->data['blockid'] = $count;
+	  				$menu .= $this->cObj->cObjGetSingle($this->conf['menuItem'], $this->conf['menuItem.']).PHP_EOL;
+
+				}
+				$menu = str_replace('|', $menu, $this->conf['menuWrap']);
+			}
+			return $menu;
+		}
 		/**
 		 * Sets markers for HTML substitution
 		 *
@@ -172,12 +215,29 @@
 		 * @return	array		$markerArray
 		 */
 		function setMarkers(array $row,$markerArray = array()) {
+			$this->pi_loadLL();
+
 			$this->cObj->data = $row;
 			foreach ($row as $key => $value) {
 				$val = $this->cObj->cObjGetSingle($this->conf[$key], $this->conf[$key.'.']);
 				$markerArray['###'.strtoupper($key).'###'] = $val ? $val : $value;
 			}
+			$markerArray['###GLOSSARY_ID###'] = 'pmkglossary'.$GLOBALS['TSFE']->id;
+			$markerArray['###PAGEURL###'] = $this->pageURL;
+			$markerArray['###WORDS_STARTING_WITH###'] = $this->pi_getLL('words_starting_with');
+			$markerArray['###TO_TOP###'] = $this->pi_getLL('to_top');
 			return $markerArray;
+		}
+
+		/**
+		 * Calback function for custom sorting
+		 *
+		 * @param	string		$a: First string
+		 * @param	string		$b: First string
+		 * @return	integer		Returns -1 if $a  is less than $b ; 1 if $a  is greater than $b , and 0 if they are equal.
+		 */
+		function _firstchar_sort($a,$b) {
+			return strcoll($a['firstchar'],$b['firstchar']);
 		}
 
 		/**
@@ -194,13 +254,16 @@
 		}
 
 		/**
-		 * Removes any non-word characters from string
+		 * Removes any non-word characters from string and converts to uppercase
+		 * If result is empty string then original string is returned
 		 *
 		 * @param	string		$text: Text with possible non-word characters
 		 * @return	string		Text stripped of non-word characters
 		 */
 		function wordcharsOnly($text) {
-			return preg_replace('/(\W|_+)/', '', $text);
+			$text = $GLOBALS['TSFE']->csConvObj->conv_case($GLOBALS['TSFE']->renderCharset,$text, 'toUpper');
+			$stext = preg_replace('/(\W|_+)/', '', $text);
+			return $stext ? $stext : $text;
 		}
 	}
 

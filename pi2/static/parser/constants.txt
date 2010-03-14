@@ -1,0 +1,30 @@
+plugin.tx_pmkglossary_pi2 {
+
+	# cat=plugin.tx_pmkglossary_pi2/links/a; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.pid_list
+	pid_list = 0
+
+	# cat=plugin.tx_pmkglossary_pi2/enable/b; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:const.TYPO3localization
+	TYPO3localization =
+
+	# cat=plugin.tx_pmkglossary_pi2/enable/c; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:const.debug
+	debug = 0
+
+	# cat=plugin.tx_pmkglossary_pi2/other/d; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.catchwordWrapTag
+	catchwordWrapTag = dfn
+
+	# cat=plugin.tx_pmkglossary_pi2/other/e; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.catchwordWrapClass
+	catchwordWrapClass = vtip
+
+	# cat=plugin.tx_pmkglossary_pi2/other/f; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.parseTags
+	parseTags = p,li,span,strong,b,em,i,u,underline
+
+	# cat=plugin.tx_pmkglossary_pi2/other/g; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.noParseClass
+	noParseClass = no-glossary,vtip
+
+	# cat=plugin.tx_pmkglossary_pi2/other/h; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.noParsePages
+	noParsePages =
+
+	# cat=plugin.tx_pmkglossary_pi2/other/i; type=options[ajax,static]; label=LLL:EXT:pmkglossary/locallang.xml:const.tooltipMode
+	tooltipMode = ajax
+
+}

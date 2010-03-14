@@ -1,2 +1,6 @@
-# cat=basic/enable/e1; type=boolean; label=Enable tabs in glossary records?
-dividers2tabs = 1
+
+	# cat=basic/1; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:extmng.dividers2tabs
+	dividers2tabs = 1
+
+	# cat=basic/1; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:extmng.unique
+	unique = 1

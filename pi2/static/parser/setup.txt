@@ -1,43 +1,36 @@
+# Include the parser script
 includeLibs.pmkglossary = EXT:pmkglossary/pi2/class.tx_pmkglossary_pi2.php
-plugin.tx_pmkglossary_pi1 {
 
-	# Global config options for both pi1 and pi2
-	pid_list = {$plugin.tx_pmkglossary_pi1.pid_list}
+plugin.tx_pmkglossary_pi2 {
 
-	TYPO3localization = {$plugin.tx_pmkglossary_pi1.TYPO3localization}
+	# Storage Page (pid_list)
+	pid_list = {$plugin.tx_pmkglossary_pi2.pid_list}
 
-	# Config options for the pi1 plugin only
-
-	templateFile = {$plugin.tx_pmkglossary_pi1.templateFile}
-
-	javascriptFile = {$plugin.tx_pmkglossary_pi1.javascriptFile}
-
-	showImage = {$plugin.tx_pmkglossary_pi1.showImage}
-	imageWidth = {$plugin.tx_pmkglossary_pi1.imageWidth}
-	imageHeight = {$plugin.tx_pmkglossary_pi1.imageHeight}
-
-	# Config options for the pi2 plugin only
-	debug = {$plugin.tx_pmkglossary_pi1.debug}
+	# Use TYPO3 Localization Overlay?
+	TYPO3localization = {$plugin.tx_pmkglossary_pi2.TYPO3localization}
 
 	# Tag for wrapping matched catchword
-	catchwordWrapTag = {$plugin.tx_pmkglossary_pi1.catchwordWrapTag}
+	catchwordWrapTag = {$plugin.tx_pmkglossary_pi2.catchwordWrapTag}
 
 	# Class for tag wrapping matched catchword
-	catchwordWrapClass = {$plugin.tx_pmkglossary_pi1.catchwordWrapClass}
+	catchwordWrapClass = {$plugin.tx_pmkglossary_pi2.catchwordWrapClass}
 
 	# Parse text inside these HTML tags.
-	parseTags = {$plugin.tx_pmkglossary_pi1.parseTags}
+	parseTags = {$plugin.tx_pmkglossary_pi2.parseTags}
 
 	# If the HTML tag has one of these classNames, then it will NOT be parsed.
-	noParseClass = {$plugin.tx_pmkglossary_pi1.noParseClass}
+	noParseClass = {$plugin.tx_pmkglossary_pi2.noParseClass}
 
 	# List of page ids (PID) which should be excluded from parsing.
-	noParsePages = {$plugin.tx_pmkglossary_pi1.noParsePages}
+	noParsePages = {$plugin.tx_pmkglossary_pi2.noParsePages}
 
 	# Mode of displaying tooltips (possible values: "ajax" or "static")
-	tooltipMode = {$plugin.tx_pmkglossary_pi1.tooltipMode}
+	tooltipMode = {$plugin.tx_pmkglossary_pi2.tooltipMode}
 
-	# Tooltip layout
+	# Enable debug output?
+	debug = {$plugin.tx_pmkglossary_pi2.debug}
+debug = 2
+	# Tooltip content layout
 	tooltip = COA
 	tooltip {
 
@@ -76,73 +69,7 @@ plugin.tx_pmkglossary_pi1 {
 		30.stdWrap.if.value = 8,9,10
 	}
 
-	image = IMAGE
-	image.altText.field = title
-	image.params = style="float: left;margin: 0 5px 2px 0;"
-	image.file {
-		import = uploads/tx_pmkglossary/
-		import.field = image
-		import.listNum = 0
-		maxW = 300
-		width = {$plugin.tx_pmkglossary_pi1.imageWidth}
-		height = {$plugin.tx_pmkglossary_pi1.imageHeight}
-	}
-
-	bodytext = TEXT
-	bodytext.field = bodytext
-	bodytext.parseFunc < lib.parseFunc_RTE
-
-
 	_CSS_DEFAULT_STYLE (
-		.accordionWrapper {
-			display:inline-block;
-			background-color:#eee;
-			border: 1px solid #000;
-			overflow:hidden;
-			width:99%;
-			margin-bottom: 20px;
-		}
-		.accordionWrapper img{vertical-align:top; border:0; margin:0; padding:0}
-		.accordionWrapper div{display:inline; float:left; margin:auto;}
-		.accordionWrapper div.content{display:none;}
-
-		.tx-pmkglossary-pi1 h3 {
-			margin: 0;
-			padding:0;
-		}
-		.tx-pmkglossary-pi1 h3 a {
-			font: normal bold 15px/17px arial;
-			background: #666 url(../typo3conf/ext/pmkglossary/res/images/accordion_tab_bg.png) repeat-x 0px 0px;
-			padding: 4px 5px 3px 5px;
-			border-bottom: 1px solid #999999;
-			border-top: 1px solid #FFFFFF;
-			color: black;
-			cursor: pointer;
-			display: block;
-			margin: 0;
-			text-decoration: none;
-		}
-		.tx-pmkglossary-pi1 h3 a:hover {
-			background-position: 0px -29px;
-		}
-		.tx-pmkglossary-pi1 {
-			margin: 10px 0 0 0;
-		}
-		.tx-pmkglossary-pi1 dl {
-			margin: 0 10px 10px 10px;
-		}
-		.tx-pmkglossary-pi1 dl dt {
-			font: normal bold 13px/15px arial;
-			margin: 10px 0 0 0;
-		}
-		.tx-pmkglossary-pi1 dl dd {
-			margin: 0 0 10px 0;
-			font: normal normal 11px/13px arial;
-			border-bottom: 1px solid #ddd;
-		}
-		.tx-pmkglossary-pi1 dl dd:last-child {
-			border-bottom: none;
-		}
 		#tx-pmkglossary-debug {
 			text-align: center;
 			margin: 10px 0;
@@ -190,33 +117,30 @@ plugin.tx_pmkglossary_pi1 {
 
 }
 
+# TYPO3 page type (typeNum=52) used for AJAX requests.
 pmkglossaryajax = PAGE
 pmkglossaryajax {
-	typeNum = {$plugin.tx_pmkglossary_pi1.typeNum}
+	typeNum = 52
 	config {
 		disableAllHeaderCode = 1
 		sendCacheHeaders = 1
 		xhtml_cleaning = 0
 		admPanel = 0
 	}
-	10 = COA_INT
-	10 {
-		10 = RECORDS
-		10.source.data = GPvar:tx_pmkglossary_pi1|glossary
-		10.source.intval = 1
-		10.tables = tx_pmkglossary_glossary
-		10.conf.tx_pmkglossary_glossary < plugin.tx_pmkglossary_pi1.tooltip
-	}
+	10 = RECORDS
+	10.source.data = GPvar:tx_pmkglossary_pi2|uid
+	10.source.intval = 1
+	10.tables = tx_pmkglossary_glossary
+	10.conf.tx_pmkglossary_glossary < plugin.tx_pmkglossary_pi2.tooltip
 }
 
-page.includeCSS {
-}
+# Include global javascript files that are required on every page
 page.includeJS {
 	jquery = EXT:pmkglossary/res/jquery-1.4.1.min.js
 	jquerysimpletip = EXT:pmkglossary/res/jquery.simpletip-1.3.1.min.js
 	simpletip = EXT:pmkglossary/res/simpletip_ajax.js
 }
-[globalString = LIT:static = {$plugin.tx_pmkglossary_pi1.tooltipMode}]
+[globalString = LIT:static = {$plugin.tx_pmkglossary_pi2.tooltipMode}]
 page.includeJS.simpletip = EXT:pmkglossary/res/simpletip_static.js
 [GLOBAL]
 

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>PMK Glossary Template</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+
+<pre>
+<strong>Common markers:</strong>
+
+<em>Markers:</em>
+FIRSTCHAR - First character in block of word (Uppercase)
+BLOCKID - Id of block
+TITLE - Glossary catchword.
+ALTTITLE - Glossary catchword in alternate spelling.
+BODYTEXT - Description of catchword.
+IMAGE - Image.
+IMAGEWIDTH - Width of image.
+IMAGEORIENT - Image orintation.
+
+<em>Special Markers:</em>
+PAGEURL - URL of current page.
+GLOSSARY_ID - ID of Glossary Plugin element.
+GLOSSARY_MENU - Menu of first letters of Glossary words.
+                Only works at the topmost level of the template.
+                Menu is defined in seperate template part.
+
+<em>News Language Markers (see pi/locallang.xml):</em>
+TO_TOP - Text "To top"
+WORDS_STARTING_WITH - Text "Words starting with:"
+
+</pre>
+
+<!-- ###TEMPLATE_GLOSSARY### begin
+	This is the template for the glossary, typically displayed on special page
+-->
+	<div class="tx-pmkglossary-glossary no-glossary" id="###GLOSSARY_ID###">
+		###GLOSSARY_MENU###
+		<div id="tx-pmkglossary-content" class="tx-pmkglossary-content">&nbsp;</div>
+		<!-- ###GLOSSARY_BLOCK### begin
+			Template for a block of glossary items
+		-->
+				<!-- ###GLOSSARY_ITEM### begin
+					Template for a single glossary item
+				-->
+ 				<!-- ###GLOSSARY_ITEM### end-->
+		<!-- ###GLOSSARY_BLOCK###  end -->
+	</div>
+
+<!-- ###TEMPLATE_GLOSSARY### end -->
+</body>
+
+</html>

@@ -14,9 +14,11 @@
 			<label index="tt_content.list_type_pi1">PMK Glossary</label>
 			<label index="tx_pmkglossary_glossary">Glossary entry</label>
 			<label index="tx_pmkglossary_glossary.title">Catchword:</label>
+			<label index="tx_pmkglossary_glossary.alttitle">Catchword(s) (alternative spelling):</label>
 			<label index="tx_pmkglossary_glossary.bodytext">Catchword Description:</label>
 			<label index="tx_pmkglossary_glossary.tab1">General</label>
 			<label index="tx_pmkglossary_glossary.tab2">Image</label>
+			<label index="pages.module.glossary">Glossary</label>
 		</languageKey>
 		<languageKey index="dk" type="array">
 			<label index="pages.tx_pmkglossary_no_parsing">Deaktiver ordliste parsing:</label>
@@ -24,9 +26,11 @@
 			<label index="tt_content.list_type_pi1">PMK Ordforklaring</label>
 			<label index="tx_pmkglossary_glossary">Ordforklaring</label>
 			<label index="tx_pmkglossary_glossary.title">Slagord:</label>
+			<label index="tx_pmkglossary_glossary.alttitle">Slagord (alternativ stavning):</label>
 			<label index="tx_pmkglossary_glossary.bodytext">Slagordbeskrivelse:</label>
 			<label index="tx_pmkglossary_glossary.tab1">Generelt</label>
 			<label index="tx_pmkglossary_glossary.tab2">Billede</label>
+			<label index="pages.module.glossary">Ordforklaring</label>
 		</languageKey>
 		<languageKey index="de"></languageKey>
 		<languageKey index="no"></languageKey>

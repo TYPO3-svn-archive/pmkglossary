@@ -15,6 +15,7 @@
 		<languageKey index="default" type="array">
 			<label index="tx_pmkglossary_no_parsing.description">Check this box if you don't want the page to be parsed by PMK Glossary.</label>
 			<label index="title.description">The catchword title is used to locate the entry, and dictates its alphabetical position.</label>
+			<label index="alttitle.description">Her you can enter catchwords in alternative spelling. Example: catchword is &quot;Hat&quot;, and alt. catchword is &quot;Hats&quot;.</label>
 			<label index="bodytext.description">The catchword description is used to describe the meaning of the catchword.</label>
 			<label index="hidden.description">Check this box if you wish to hide the glossary element from being displayed.</label>
 			<label index="image.description">Insert an image.</label>
@@ -23,6 +24,7 @@
 			<label index="imageorient.details">The position above and below the body text is pretty straight forward.&lt;br /&gt;The options &quot;In text&quot; means that the image block is displayed with text aside it. When you select this option the template will probably force the images into smaller dimensions because they cannot take up the same space when text is supposed to float around them.&lt;br /&gt;When you select &quot;In text&quot; you can choose the options either above or below the divider &quot;No wrap&quot;. If you select the &quot;In text&quot; option above, the bodytext will float &lt;em&gt;under&lt;/em&gt; the image block when the bodytext reaches the end of the image block. So in other words the body text &lt;em&gt;wraps around&lt;/em&gt; the image block. If you select &quot;In text&quot; below the &quot;No wrap&quot; divider, the body text will not float under the image block, but simply continue in its column.</label>
 			<label index="imagewidth.description">Enter the width in pixels of the image.</label>
 			<label index="imagewidth.details">The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfectly into those dimensions. However this does give you an opportunity to specify a specific width.</label>
+			<label index="imageheight.description">Enter the height of the image in pixels.</label>
 			<label index="l10n_parent.description">Select the record in the default language, which corresponds to this record.</label>
 			<label index="sys_language_uid.description">Select the system language of this element. &lt;br /&gt;Notice this will affect whether the element is visible.</label>
 			<label index="sys_language_uid.details">This allows you to assign a specific language to the content element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.&lt;br /&gt;The available system languages are created by the administrator.</label>
