@@ -29,7 +29,7 @@ plugin.tx_pmkglossary_pi2 {
 
 	# Enable debug output?
 	debug = {$plugin.tx_pmkglossary_pi2.debug}
-debug = 2
+
 	# Tooltip content layout
 	tooltip = COA
 	tooltip {

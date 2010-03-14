@@ -6,7 +6,7 @@ plugin.tx_pmkglossary_pi2 {
 	# cat=plugin.tx_pmkglossary_pi2/enable/b; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:const.TYPO3localization
 	TYPO3localization =
 
-	# cat=plugin.tx_pmkglossary_pi2/enable/c; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:const.debug
+	# cat=plugin.tx_pmkglossary_pi2/enable/c; type=options[No debuginfo=0,Show Parsetime=1,Show debuginfo=2]; label=LLL:EXT:pmkglossary/locallang.xml:const.debug
 	debug = 0
 
 	# cat=plugin.tx_pmkglossary_pi2/other/d; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.catchwordWrapTag
