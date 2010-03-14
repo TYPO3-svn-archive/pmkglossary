@@ -3,7 +3,7 @@ $(window).load(function() {
 	// Get the baseUrl in case the url is relative.
 	var baseUrl = window.location.protocol+'//'+window.location.host+'/';
 
-	$(".vtip").each(function() {
+	$(".gtip").each(function() {
 		$(this).simpletip({
 			fixed: false,
 			offset: [12,12],

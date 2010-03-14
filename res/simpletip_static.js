@@ -1,5 +1,5 @@
 $(window).load(function() {
-	$(".vtip").each(function() {
+	$(".gtip").each(function() {
 		$(this).simpletip({
 			fixed: false,
 			offset: [12,12],
