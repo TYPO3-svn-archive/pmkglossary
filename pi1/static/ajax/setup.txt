@@ -12,6 +12,10 @@ plugin.tx_pmkglossary_pi1 {
 	# Javascript file(s): File or comma separated list of files.
 	javascriptFile = {$plugin.tx_pmkglossary_pi1.javascriptFile}
 
+	# Set to 1 if you want the entire glossary loaded.
+	# For AJAX use, set this to 0.
+	displayRecords = {$plugin.tx_pmkglossary_pi1.displayRecords}
+
 	menuItem = TEXT
 	menuItem.field = firstchar
 	menuItem.typolink.parameter.data = page:uid
@@ -21,10 +25,6 @@ plugin.tx_pmkglossary_pi1 {
 	menuItem.wrap = <li>|</li>
 
 	menuWrap = <ul class="tx-pmkglossary-menu">|</ul>
-
-	# Set to 1 if you want the entire glossary loaded.
-	# For AJAX use, set this to 0.
-	displayRecords = {$plugin.tx_pmkglossary_pi1.displayRecords}
 
 	_CSS_DEFAULT_STYLE (
 		.tx-pmkglossary-glossary {
@@ -107,95 +107,6 @@ plugin.tx_pmkglossary_pi1 {
 			background: transparent url(../typo3conf/ext/pmkglossary/res/images/fancypants.gif) no-repeat center center;
 		}
 	)
-/*
-	_CSS_DEFAULT_STYLE (
-		.accordionWrapper {
-			display:inline-block;
-			background-color:#eee;
-			border: 1px solid #000;
-			overflow:hidden;
-			width:99%;
-			margin-bottom: 20px;
-		}
-		.accordionWrapper img{vertical-align:top; border:0; margin:0; padding:0}
-		.accordionWrapper div{display:inline; float:left; margin:auto;}
-		.accordionWrapper div.content{display:none;}
-
-		.tx-pmkglossary-pi1 h3 {
-			margin: 0;
-			padding:0;
-		}
-		.tx-pmkglossary-pi1 h3 a {
-			font: normal bold 15px/17px arial;
-			background: #666 url(../typo3conf/ext/pmkglossary/res/images/accordion_tab_bg.png) repeat-x 0px 0px;
-			padding: 4px 5px 3px 5px;
-			border-bottom: 1px solid #999999;
-			border-top: 1px solid #FFFFFF;
-			color: black;
-			cursor: pointer;
-			display: block;
-			margin: 0;
-			text-decoration: none;
-		}
-		.tx-pmkglossary-pi1 h3 a:hover {
-			background-position: 0px -29px;
-		}
-		.tx-pmkglossary-pi1 {
-			margin: 10px 0 0 0;
-		}
-		.tx-pmkglossary-pi1 dl {
-			margin: 0 10px 10px 10px;
-		}
-		.tx-pmkglossary-pi1 dl dt {
-			font: normal bold 13px/15px arial;
-			margin: 10px 0 0 0;
-		}
-		.tx-pmkglossary-pi1 dl dd {
-			margin: 0 0 10px 0;
-			font: normal normal 11px/13px arial;
-			border-bottom: 1px solid #ddd;
-		}
-		.tx-pmkglossary-pi1 dl dd:last-child {
-			border-bottom: none;
-		}
-		.tx-pmkglossary-menu ul {
-			list-style: none;
-			margin: 0;
-			padding: 0 0 5px 0;
-		}
-		.tx-pmkglossary-menu ul li {
-			text-align: center;
-			float: left;
-			width: 22px;
-			margin:0 1px 1px 0;
-			padding:0;
-		}
-		.tx-pmkglossary-menu ul li a {
-			text-decoration: none;
-			color: #000;
-			font-size: 12px;
-			font-weight: bold;
-			line-height: 16px;
-			display: block;
-			padding: 2px;
-			background-color: #ddd;
-			border: 1px outset;
-		}
-		.tx-pmkglossary-menu ul li a:hover {
-			border: 1px inset;
-			padding: 3px 1px 1px 3px;
-			color: #222;
-		}
-		.tx-pmkglossary-toplink {
-			clear: both;
-			text-align: right;
-			font-size: 80%;
-		}
-		.tx-pmkglossary-toplink a {
-			color: #000;
-		}
-	)
-*/
 }
 
 # TYPO3 page type (typeNum=53) used for AJAX requests.
@@ -266,6 +177,6 @@ wrap = |<hr />
 
 # Include global javascript files that are required on every page
 page.includeJS {
-	jquery = EXT:pmkglossary/res/jquery-1.4.1.min.js
+	jquery = EXT:pmkglossary/res/jquery-1.4.2.min.js
 }
 

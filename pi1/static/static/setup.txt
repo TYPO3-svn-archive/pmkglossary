@@ -133,6 +133,6 @@ plugin.tx_pmkglossary_pi1 {
 
 # Include global javascript files that are required on every page
 page.includeJS {
-	jquery = EXT:pmkglossary/res/jquery-1.4.1.min.js
+	jquery = EXT:pmkglossary/res/jquery-1.4.2.min.js
 }
 

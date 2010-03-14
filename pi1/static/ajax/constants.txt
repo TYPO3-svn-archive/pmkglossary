@@ -6,15 +6,11 @@ plugin.tx_pmkglossary_pi1 {
 	# cat=plugin.tx_pmkglossary_pi1/enable/b; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:const.TYPO3localization
 	TYPO3localization =
 
-    # cat=plugin.tx_pmkglossary_pi1/file/c; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.templateFile
+	# cat=plugin.tx_pmkglossary_pi1/file/c; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.templateFile
 	templateFile = EXT:pmkglossary/res/pmkglossary_template_ajax.html
 
-    # cat=plugin.tx_pmkglossary_pi1/file/d; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.javascriptFile
-	#javascriptFile = EXT:pmkglossary/res/jquery.msAccordion.min.js
+	# cat=plugin.tx_pmkglossary_pi1/file/d; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.javascriptFile
 	javascriptFile = EXT:pmkglossary/res/glossary_ajax.js
-
-	# cat=plugin.tx_pmkglossary_pi1/enable/e; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:const.showImage
-	showImage = 1
 
 	# cat=plugin.tx_pmkglossary_pi1/enable/f; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:const.displayRecords
 	displayRecords = 0

@@ -59,8 +59,8 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 		),
 		'wordtitle' => array (
 			'config' => array (
-				//'type' => 'passthrough',
-				'type' => 'input',
+				'type' => 'passthrough',
+				//'type' => 'input',
 				'size' => '30',
 				'readOnly' => '1',
 			)

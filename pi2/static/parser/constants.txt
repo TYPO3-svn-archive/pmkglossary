@@ -13,13 +13,13 @@ plugin.tx_pmkglossary_pi2 {
 	catchwordWrapTag = dfn
 
 	# cat=plugin.tx_pmkglossary_pi2/other/e; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.catchwordWrapClass
-	catchwordWrapClass = vtip
+	catchwordWrapClass = gtip
 
 	# cat=plugin.tx_pmkglossary_pi2/other/f; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.parseTags
 	parseTags = p,li,span,strong,b,em,i,u,underline
 
 	# cat=plugin.tx_pmkglossary_pi2/other/g; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.noParseClass
-	noParseClass = no-glossary,vtip
+	noParseClass = no-glossary,gtip
 
 	# cat=plugin.tx_pmkglossary_pi2/other/h; type=text; label=LLL:EXT:pmkglossary/locallang.xml:const.noParsePages
 	noParsePages =
