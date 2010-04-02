@@ -1,43 +1,44 @@
 <?php
-	/***************************************************************
-	*  Copyright notice
-	*
-	*  (c) 2010 Peter Klein <pmk@io.dk>
-	*  All rights reserved
-	*
-	*  This script is part of the TYPO3 project. The TYPO3 project is
-	*  free software; you can redistribute it and/or modify
-	*  it under the terms of the GNU General Public License as published by
-	*  the Free Software Foundation; either version 2 of the License, or
-	*  (at your option) any later version.
-	*
-	*  The GNU General Public License can be found at
-	*  http://www.gnu.org/copyleft/gpl.html.
-	*
-	*  This script is distributed in the hope that it will be useful,
-	*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-	*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	*  GNU General Public License for more details.
-	*
-	*  This copyright notice MUST APPEAR in all copies of the script!
-	***************************************************************/
-	/**
-	* [CLASS/FUNCTION INDEX of SCRIPT]
-	*
-	*
-	*
-	*   48: class ext_update
-	*   55:     function main()
-	*  100:     function convertData($options)
-	*  135:     function convertOverlay($parentRow,$newParentUid,$options)
-	*  166:     function createRecord($row)
-	*  192:     wordcharsOnly($text)
-	*  204:     function access()
-	*
-	* TOTAL FUNCTIONS: 4
-	* (This index is automatically created/updated by the extension "extdeveval")
-	*
-	*/
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2010 Peter Klein <pmk@io.dk>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+ /**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   50: class ext_update
+ *   60:     function main()
+ *  107:     function convertData($options)
+ *  153:     function checkForDupe($value,$table,$pid,$sys_language_uid)
+ *  172:     function convertOverlay($parentRow,$newParentUid,$options)
+ *  211:     function createRecord($row)
+ *  237:     function wordcharsOnly($text)
+ *  247:     function access()
+ *
+ * TOTAL FUNCTIONS: 7
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 require_once(PATH_t3lib.'class.t3lib_page.php');
 
@@ -100,7 +101,7 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
 	/**
 	 * Convert mrglossary data to PMK Glossary format
 	 *
-	 * @param integer		$options: What to do with record after converting. (0=Nothing, 1=Hide, 2=Delete)
+	 * @param	integer		$options: What to do with record after converting. (0=Nothing, 1=Hide, 2=Delete)
 	 * @return	void
 	 */
 	function convertData($options) {
@@ -163,9 +164,9 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
 	/**
 	 * Convert mrglossary overlay data to PMK Glossary format
 	 *
-	 * @param array		$parentRow: Data from main record
-	 * @param integer	$newParentUid: Id for parent record
-	 * @param integer	$options: What to do with record after converting. (0=Nothing, 1=Hide, 2=Delete)
+	 * @param	array		$parentRow: Data from main record
+	 * @param	integer		$newParentUid: Id for parent record
+	 * @param	integer		$options: What to do with record after converting. (0=Nothing, 1=Hide, 2=Delete)
 	 * @return	void
 	 */
 	function convertOverlay($parentRow,$newParentUid,$options) {
@@ -204,7 +205,7 @@ require_once(PATH_t3lib.'class.t3lib_page.php');
 	/**
 	 * Save converted data in PMK Glossary format
 	 *
-	 * @param array		$row: Data to save in DB
+	 * @param	array		$row: Data to save in DB
 	 * @return	void
 	 */
 	function createRecord($row) {

@@ -25,6 +25,7 @@
 			<label index="imagewidth.description">Enter the width in pixels of the image.</label>
 			<label index="imagewidth.details">The template is normally configured to a max width of an image and so you don't need to specify the width if the image fits perfectly into those dimensions. However this does give you an opportunity to specify a specific width.</label>
 			<label index="imageheight.description">Enter the height of the image in pixels.</label>
+			<label index="imagecaption.description">Enter a caption for the image</label>
 			<label index="l10n_parent.description">Select the record in the default language, which corresponds to this record.</label>
 			<label index="sys_language_uid.description">Select the system language of this element. &lt;br /&gt;Notice this will affect whether the element is visible.</label>
 			<label index="sys_language_uid.details">This allows you to assign a specific language to the content element. If you select anything but the default value, the element will &lt;em&gt;not&lt;/em&gt; be visible unless the language assigned is also configured by the TypoScript template.&lt;br /&gt;The available system languages are created by the administrator.</label>

@@ -4,3 +4,6 @@
 
 	# cat=basic/1; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:extmng.unique
 	unique = 1
+
+	# cat=basic/1; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:extmng.customFolder
+	customFolder = 1

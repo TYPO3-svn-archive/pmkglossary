@@ -21,6 +21,7 @@ CREATE TABLE tx_pmkglossary_glossary (
 	imagewidth int(11) unsigned DEFAULT '0' NOT NULL,
 	imageheight int(11) unsigned DEFAULT '0' NOT NULL,
 	imageorient tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	imagecaption text,
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

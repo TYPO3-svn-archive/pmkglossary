@@ -27,4 +27,6 @@ plugin.tx_pmkglossary_pi2 {
 	# cat=plugin.tx_pmkglossary_pi2/other/i; type=options[ajax,static]; label=LLL:EXT:pmkglossary/locallang.xml:const.tooltipMode
 	tooltipMode = ajax
 
+	# cat=plugin.tx_pmkglossary_pi2/enable/j; type=boolean; label=LLL:EXT:pmkglossary/locallang.xml:const.offsetAdjust
+	offsetAdjust = 0
 }

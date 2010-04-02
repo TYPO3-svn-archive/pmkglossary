@@ -19,7 +19,7 @@ plugin.tx_pmkglossary_pi1 {
 	menuItem = TEXT
 	menuItem.field = firstchar
 	menuItem.typolink.parameter.data = page:uid
-	menuItem.typolink.additionalParams.dataWrap = &type=53&tx_pmkglossary_pi1[firstchar]={field:firstchar}
+	menuItem.typolink.additionalParams.dataWrap = &type=52&tx_pmkglossary_pi1[firstchar]={field:firstchar}
 	menuItem.typolink.useCacheHash = 1
 	menuItem.typolink.title.dataWrap = {LLL:EXT:pmkglossary/pi1/locallang.xml:words_starting_with} {field:firstchar}
 	menuItem.wrap = <li>|</li>
@@ -33,6 +33,9 @@ plugin.tx_pmkglossary_pi1 {
 			float: left;
 			margin: 0;
 			padding: 1px 0 6px 4px;
+			list-style: none;
+		}
+		ul.tx-pmkglossary-menu li {
 			list-style: none;
 		}
 		ul.tx-pmkglossary-menu li {
@@ -91,10 +94,9 @@ plugin.tx_pmkglossary_pi1 {
 			padding: 5px 10px;
 			margin-left: 46px;
 			margin-right: -28px;
-			width: 500px;
+			width: 480px;
 			background: #eee;
 			border: 2px solid #aaa;
-			min-height: 730px;
 			border-top-right-radius: 5px;
 			border-bottom-right-radius: 5px;
 			-moz-border-radius-topright: 5px;
@@ -109,31 +111,33 @@ plugin.tx_pmkglossary_pi1 {
 	)
 }
 
-# TYPO3 page type (typeNum=53) used for AJAX requests.
-pmkglossaryajax2 = PAGE
-pmkglossaryajax2 {
-	# NOTE: If you want/need to change the 53" typeNum, then you need to change the files
-	# "simpletip_static.js" and "simpletip_ajax.js" as the value is hardcoded in those 2 files.
-	typeNum = 53
+# TYPO3 page type (typeNum=52) used for AJAX requests.
+pmkglossaryajax = PAGE
+pmkglossaryajax {
+	typeNum = 52
+	config >
 	config {
 		disableAllHeaderCode = 1
 		sendCacheHeaders = 1
 		xhtml_cleaning = 0
 		admPanel = 0
 	}
-	10 = COA
-	10 {
+	20 = COA
+	20 {
 		10 = CONTENT
 		10.table = tx_pmkglossary_glossary
 		10.select.pidInList = {$plugin.tx_pmkglossary_pi1.pid_list}
 		10.select.orderBy = title
-		10.select.andWhere = wordtitle LIKE "{GPvar:tx_pmkglossary_pi1|firstchar}%" AND sys_language_uid IN (-1,{TSFE:sys_language_uid})
-		10.select.andWhere.override = wordtitle LIKE "{GPvar:tx_pmkglossary_pi1|firstchar}%" AND (sys_language_uid IN (-1,0) OR (sys_language_uid={TSFE:sys_language_uid} AND l10n_parent=0))
-		10.select.andWhere.override.if.isTrue = {$plugin.tx_pmkglossary_pi1.TYPO3localization}
-		10.select.andWhere.insertData = 1
+		10.select.andWhere.data = GPvar:tx_pmkglossary_pi1|firstchar
+		10.select.andWhere.htmlSpecialChars = 1
+		10.select.andWhere.dataWrap = wordtitle LIKE "|%" AND sys_language_uid IN (-1,{TSFE:sys_language_uid})
+		10.select.andWhere.dataWrap.override = wordtitle LIKE "|%" AND (sys_language_uid IN (-1,0) OR (sys_language_uid={TSFE:sys_language_uid} AND l10n_parent=0))
+		10.select.andWhere.dataWrap.override.if.isTrue = {$plugin.tx_pmkglossary_pi1.TYPO3localization}
 		10.renderObj = COA
 		10.renderObj {
-wrap = |<hr />
+
+			wrap = |<hr />
+
 			10 = TEXT
 			10.field = title
 			10.wrap = <h3>|</h3>
@@ -157,7 +161,7 @@ wrap = |<hr />
 				imageLinkWrap {
 					enable = 1
 					typolink {
-						title.field = title
+						title.field = imagecaption // title
 						target = {$styles.content.links.target}
 						extTarget = {$styles.content.links.extTarget}
 						parameter.cObject = IMG_RESOURCE
@@ -176,7 +180,7 @@ wrap = |<hr />
 }
 
 # Include global javascript files that are required on every page
-page.includeJS {
+/* page.includeJS {
 	jquery = EXT:pmkglossary/res/jquery-1.4.2.min.js
 }
-
+*/

@@ -13,6 +13,7 @@
 			<label index="pi1_title">PMK Glossary</label>
 			<label index="extmng.dividers2tabs">Use Tabs in glossary records?</label>
 			<label index="extmng.unique">Enable check for unique catchwords? (Experimental)</label>
+			<label index="extmng.customFolder">Enable custom folder icon?</label>
 			<label index="const.pid_list">Starting Point (pid_list) : The PID of the page (or comma separated list of PIDs) where your glossary records are located.</label>
 			<label index="const.TYPO3localization">Use TYPO3 Localization Overlay? : If enabled localization overlay is used.</label>
 			<label index="const.debug">Enable debug output? : Displays the time it takes to execute the glossary parser at the bottom of the page.</label>
@@ -27,6 +28,7 @@
 			<label index="const.showImage">Show thumbnail images in glossary?:</label>
 			<label index="const.imageWidth">Width of thumbnail image:</label>
 			<label index="const.imageHeight">Height of thumbnail image:</label>
+			<label index="const.offsetAdjust">Adjust offset positions? : On some setups the offset of the matched catchword needs to be adjusted.</label>
 			<label index="const.displayRecords">Display ALL Glossary records? : Set to 1 if you want the entire glossary loaded. For AJAX use, set this to 0.</label>
 			<label index="upd.result">Out of %s mr_glossary records, %s was converted to pmkglossary format.</label>
 			<label index="upd.duperesult">%s duplicate mr_glossary records NOT converted!</label>
@@ -43,6 +45,7 @@
 			<label index="pi1_title">PMK Ordforklaring</label>
 			<label index="extmng.dividers2tabs">Brug faneblade i orforklaringselementer?</label>
 			<label index="extmng.unique">Aktiver check for unik slagord? (Experimental)</label>
+			<label index="extmng.customFolder">Aktiver specielt mappe ikon?</label>
 			<label index="const.pid_list">Startpunkt (pid_list) : PID på den side/mappe (eller kommasepareret liste af PIDs) hvor du gemmer dine orforklarings elementer</label>
 			<label index="const.TYPO3localization">Brug TYPO3 Localization Overlay? : Hvis aktiveret, så bruges localization overlay funktionalitet.</label>
 			<label index="const.debug">Aktiver debug info? : Viser i bunden af siden, den tid det har taget at eksekverer orforklaringsparseren.</label>
@@ -57,6 +60,7 @@
 			<label index="const.showImage">Vis miniaturebilleder i ordbog?:</label>
 			<label index="const.imageWidth">Bredde på miniaturebillede:</label>
 			<label index="const.imageHeight">Højde på miniaturebillede:</label>
+			<label index="const.offsetAdjust">Juster offset positioner?:</label>
 			<label index="upd.result">Ud af %s mr_glossary elementer blev %s konverteret til pmkglossary format.</label>
 			<label index="upd.duperesult">%s identiske mr_glossary elementer blev IKKE konverteret!</label>
 			<label index="upd.legend">Konverter &quot;mr_glossary&quot; data til &quot;pmkglossary&quot; format</label>

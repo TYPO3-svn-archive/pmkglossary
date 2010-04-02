@@ -1,40 +1,42 @@
 <?php
-	/***************************************************************
-	*  Copyright notice
-	*
-	*  (c) 2010 Peter Klein <pmk@io.dk>
-	*  All rights reserved
-	*
-	*  This script is part of the TYPO3 project. The TYPO3 project is
-	*  free software; you can redistribute it and/or modify
-	*  it under the terms of the GNU General Public License as published by
-	*  the Free Software Foundation; either version 2 of the License, or
-	*  (at your option) any later version.
-	*
-	*  The GNU General Public License can be found at
-	*  http://www.gnu.org/copyleft/gpl.html.
-	*
-	*  This script is distributed in the hope that it will be useful,
-	*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-	*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	*  GNU General Public License for more details.
-	*
-	*  This copyright notice MUST APPEAR in all copies of the script!
-	***************************************************************/
-	/**
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2010 Peter Klein <pmk@io.dk>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+/**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
  *
- *   52: class tx_pmkglossary_pi1 extends tslib_pibase
- *   66:     function main($content, $conf)
- *   89:     function getGlossary()
- *  128:     function displayGlossary($glossary)
- *  174:     function setMarkers(array $row,$markerArray = array()
- *  190:     function _alpha_sort($a, $b)
- *  202:     function wordcharsOnly($text)
+ *   54: class tx_pmkglossary_pi1 extends tslib_pibase
+ *   68:     function main($content, $conf)
+ *   91:     function getGlossary()
+ *  129:     function displayGlossary($glossary)
+ *  183:     function getMenu()
+ *  223:     function setMarkers(array $row,$markerArray = array())
+ *  245:     function _firstchar_sort($a,$b)
+ *  256:     function _alpha_sort($a,$b)
+ *  269:     function wordcharsOnly($text)
  *
- * TOTAL FUNCTIONS: 6
+ * TOTAL FUNCTIONS: 8
  * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
@@ -114,7 +116,6 @@
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			//ksort($glossary,SORT_LOCALE_STRING);
 			uksort($glossary, array($this, '_alpha_sort'));
 			return $glossary;
 		}
@@ -174,6 +175,11 @@
 			return $res;
 		}
 
+		/**
+		 * Get menuobjcet for Glossary
+		 *
+		 * @return	string		Menu for glossary
+		 */
 		function getMenu() {
 			$menu = '';
 			$table = 'tx_pmkglossary_glossary';

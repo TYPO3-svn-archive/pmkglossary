@@ -30,14 +30,12 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_pmkglossary_glossary.gif',
 	),
 	'feInterface' => Array (
-		'fe_admin_fieldList' => 'hidden, title, wordtitle, alttitle, bodytext, image, imagewidth, imageheight, imageorient',
+		'fe_admin_fieldList' => 'hidden, title, wordtitle, alttitle, bodytext, image, imagewidth, imageheight, imageorient, imagecaption',
 	)
 );
 
-
 t3lib_div::loadTCA('tt_content');
 $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='layout,select_key,pages,recursive';
-
 
 $tempColumns = Array (
 	'tx_pmkglossary_no_parsing' => Array (
@@ -53,13 +51,6 @@ t3lib_extMgm::addTCAcolumns('pages',$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes('pages','tx_pmkglossary_no_parsing;;;;1-1-1','','after:nav_title');
 // add "context sensitive help" (csh)
 t3lib_extMgm::addLLrefForTCAdescr('pages','EXT:pmkglossary/locallang_csh.xml');
-
-$TCA['pages']['columns']['module']['config']['items'][] = array(
-	'LLL:EXT:'.$_EXTKEY.'/locallang_db.xml:pages.module.glossary',
-	$_EXTKEY,
-	'EXT:'.$_EXTKEY.'/folder_tx_pmkglossary_glossary.gif'
-);
-
 t3lib_extMgm::addPlugin(
 	array(
 		'LLL:EXT:pmkglossary/locallang_db.xml:tt_content.list_type_pi1',
@@ -71,7 +62,14 @@ t3lib_extMgm::addPlugin(
 
 if (TYPO3_MODE == 'BE') {
 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_pmkglossary_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_pmkglossary_pi1_wizicon.php';
-	$GLOBALS['ICON_TYPES'][$_EXTKEY] = array('icon' => t3lib_extMgm::extRelPath($_EXTKEY).'/folder_tx_pmkglossary_glossary.gif');
+	if ($confArr['customFolder']) {
+		$TCA['pages']['columns']['module']['config']['items'][] = array(
+			'LLL:EXT:'.$_EXTKEY.'/locallang_db.xml:pages.module.glossary',
+			'glossary',
+			t3lib_extMgm::extRelPath($_EXTKEY).'/folder_tx_pmkglossary_glossary.gif'
+		);
+		$GLOBALS['ICON_TYPES']['glossary'] = array('icon' => t3lib_extMgm::extRelPath($_EXTKEY).'/folder_tx_pmkglossary_glossary.gif');
+	}
 }
 
 t3lib_extMgm::addStaticFile($_EXTKEY,'pi2/static/parser/', 'PMK Glossary (parser)');

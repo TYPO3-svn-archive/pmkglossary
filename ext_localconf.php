@@ -10,7 +10,7 @@ if ($confArr['unique']) {
 	$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_pmkglossary_extraeval'] = 'EXT:'.$_EXTKEY.'/class.tx_pmkglossary_extraeval.php';
 }
 
-// Enable hook after saving page or content element
+// Enable hook after saving glossary element
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:'.$_EXTKEY.'/class.tx_pmkglossary_wordtitle.php:&tx_pmkglossary_wordtitle';
 
 

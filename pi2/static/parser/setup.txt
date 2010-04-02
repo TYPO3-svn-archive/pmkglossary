@@ -30,6 +30,9 @@ plugin.tx_pmkglossary_pi2 {
 	# Enable debug output?
 	debug = {$plugin.tx_pmkglossary_pi2.debug}
 
+	# Enable offsetAdjust?
+	offsetAdjust = {$plugin.tx_pmkglossary_pi2.offsetAdjust}
+	
 	# Tooltip content layout
 	tooltip = COA
 	tooltip {
@@ -41,8 +44,18 @@ plugin.tx_pmkglossary_pi2 {
 		10.file.maxW = 300
 		10.file.width.override.dataWrap = {field:imagewidth}m
 		10.file.width.override.if.isTrue.field = imagewidth
-		10.stdWrap.innerWrap.cObject = CASE
+		10.stdWrap.innerWrap.cObject = COA
 		10.stdWrap.innerWrap.cObject {
+			if.isTrue.field = imagecaption
+			10 = TEXT
+			10.value = <div>|<br />
+
+			20 = TEXT
+			20.field = imagecaption
+			20.dataWrap = <span class="tx-pmkglossary-caption" style="width:{TSFE:lastImageInfo|0}px;">|</span></div>
+		}
+		10.stdWrap.outerWrap.cObject = CASE
+		10.stdWrap.outerWrap.cObject {
 			key.field = imageorient
 			default = TEXT
 			default.value = <div style="text-align:center;">|</div>
@@ -81,9 +94,9 @@ plugin.tx_pmkglossary_pi2 {
 			color: #000;
 		}
 		dfn.gtip {
-			color: #00aa00;
 			cursor: help;
 			font-style : normal;
+			color: #00aa00;
 			border-bottom: 1px dashed #00aa00;
 		}
 		.tooltip {
@@ -113,6 +126,11 @@ plugin.tx_pmkglossary_pi2 {
 			height: 50px;
 			background: transparent url(../typo3conf/ext/pmkglossary/res/images/ajax-loader1.gif) no-repeat center center;
 		}
+		.tx-pmkglossary-caption {
+			font-size: 85%;
+			color: #896D51;
+			/* display:inline-block; */
+		}
 	)
 
 }
@@ -121,6 +139,7 @@ plugin.tx_pmkglossary_pi2 {
 pmkglossaryajax = PAGE
 pmkglossaryajax {
 	typeNum = 52
+	config >
 	config {
 		disableAllHeaderCode = 1
 		sendCacheHeaders = 1
@@ -132,6 +151,7 @@ pmkglossaryajax {
 	10.source.intval = 1
 	10.tables = tx_pmkglossary_glossary
 	10.conf.tx_pmkglossary_glossary < plugin.tx_pmkglossary_pi2.tooltip
+
 }
 
 # Include global javascript files that are required on every page

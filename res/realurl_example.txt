@@ -1,0 +1,70 @@
+<?php
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']= array(
+	'_DEFAULT' => array(
+		'init' => array(
+			'enableCHashCache' => 1,
+			'appendMissingSlash' => 'ifNotFile,redirect',
+			'adminJumpToBackend' => 1,
+			'enableUrlDecodeCache' => 1,
+			'enableUrlEncodeCache' => 1,
+			'emptyUrlReturnValue' => '/',
+		),
+		'pagePath' => array(
+			'type' => 'user',
+			'userFunc' => 'EXT:realurl/class.tx_realurl_advanced.php:&tx_realurl_advanced->main',
+			'spaceCharacter' => '-',
+			'languageGetVar' => 'L',
+			'expireDays' => 14,
+			'rootpage_id' => 1,
+		),
+		'fileName' => array(
+			'defaultToHTMLsuffixOnPrev' => 0,
+			'acceptHTMLsuffix' => 1,
+		),
+		'preVars' => array(
+			array(
+				'GETvar' => 'L',
+				'valueMap' => array(
+					'da' => 1,
+				),
+				'noMatch' => 'bypass',
+			),
+		),
+		'fixedPostVars' => array(
+			'_DEFAULT' => array(
+				array(
+					'GETvar' => 'type',
+					'valueMap' => array(
+						'ajax' => 52,
+					),
+				),
+			),
+		),
+		'postVarSets' => array(
+			'_DEFAULT' => array(
+				'glossary' => array(
+					array(
+						'GETvar' => 'tx_pmkglossary_pi1[firstchar]',
+					),
+				),
+				'word' => array(
+					array(
+						'GETvar' => 'tx_pmkglossary_pi2[uid]',
+						'lookUpTable' => array(
+							'table' => 'tx_pmkglossary_glossary',
+							'id_field' => 'uid',
+							'alias_field' => 'title',
+							'addWhereClause' => ' AND NOT deleted',
+							'useUniqueCache' => 1,
+							'useUniqueCache_conf' => array(
+								'strtolower' => 1,
+								'spaceCharacter' => '-',
+							),
+						),
+					),
+				),
+			),
+		),
+	),
+)
+?>

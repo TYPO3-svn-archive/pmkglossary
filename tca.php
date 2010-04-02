@@ -4,7 +4,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $TCA['tx_pmkglossary_glossary'] = Array (
 	'ctrl' => $TCA['tx_pmkglossary_glossary']['ctrl'],
 	'interface' => Array (
-		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,title,wordtitle,alttitle,bodytext,image,imagewidth,imageheight,imageorient'
+		'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,title,wordtitle,alttitle,bodytext,image,imagewidth,imageheight,imageorient,imagecaption'
 	),
 	'feInterface' => $TCA['tx_pmkglossary_glossary']['feInterface'],
 	'columns' => Array (
@@ -155,9 +155,19 @@ $TCA['tx_pmkglossary_glossary'] = Array (
 				'iconsInOptionTags' => 1,
 			)
 		),
+		'imagecaption' => Array (
+			'exclude' => 1,
+			'l10n_mode' => 'mergeIfNotBlank',
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.caption',
+			'config' => Array (
+				'type' => 'input',
+				'size' => '40',
+				'softref' => 'typolink_tag,images,email[subst],url'
+			)
+		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => '--div--;LLL:EXT:pmkglossary/locallang_db.xml:tx_pmkglossary_glossary.tab1,sys_language_uid;;1;;1-1-1, hidden, title, wordtitle, alttitle, bodytext;;;richtext[]:rte_transform[mode=ts_css|imgpath=uploads/tx_pmkglossary/rte/], --div--;LLL:EXT:pmkglossary/locallang_db.xml:tx_pmkglossary_glossary.tab2,image;;;;2-2-2, imageorient, imagewidth;;2;;')
+		'0' => Array('showitem' => '--div--;LLL:EXT:pmkglossary/locallang_db.xml:tx_pmkglossary_glossary.tab1,sys_language_uid;;1;;1-1-1, hidden, title, wordtitle, alttitle, bodytext;;;richtext[]:rte_transform[mode=ts_css|imgpath=uploads/tx_pmkglossary/rte/], --div--;LLL:EXT:pmkglossary/locallang_db.xml:tx_pmkglossary_glossary.tab2,image;;;;2-2-2, imageorient, imagewidth;;2;;,imagecaption')
 	),
 	'palettes' => Array (
 		'1' => Array('showitem' => 'l10n_parent, l10n_diffsource'),
