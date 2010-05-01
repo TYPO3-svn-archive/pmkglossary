@@ -150,7 +150,7 @@ pmkglossaryajax {
 		admPanel = 0
 	}
 	10 = RECORDS
-	10.source.data = GPvar:tx_pmkglossary_pi2|uid
+	10.source.data = GP:tx_pmkglossary_pi2|uid
 	10.source.intval = 1
 	10.tables = tx_pmkglossary_glossary
 	10.conf.tx_pmkglossary_glossary < plugin.tx_pmkglossary_pi2.tooltip

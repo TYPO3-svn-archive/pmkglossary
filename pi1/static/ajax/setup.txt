@@ -124,13 +124,13 @@ pmkglossaryajax {
 	}
 	20 = COA
 	20 {
-		if.isTrue.data = GPvar:tx_pmkglossary_pi1|firstchar
+		if.isTrue.data = GP:tx_pmkglossary_pi1|firstchar
 		
 		10 = CONTENT
 		10.table = tx_pmkglossary_glossary
 		10.select.pidInList = {$plugin.tx_pmkglossary_pi1.pid_list}
 		10.select.orderBy = title
-		10.select.andWhere.data = GPvar:tx_pmkglossary_pi1|firstchar
+		10.select.andWhere.data = GP:tx_pmkglossary_pi1|firstchar
 		10.select.andWhere.htmlSpecialChars = 1
 		10.select.andWhere.dataWrap = wordtitle LIKE "|%" AND sys_language_uid IN (-1,{TSFE:sys_language_uid})
 		10.select.andWhere.dataWrap.override = wordtitle LIKE "|%" AND (sys_language_uid IN (-1,0) OR (sys_language_uid={TSFE:sys_language_uid} AND l10n_parent=0))
